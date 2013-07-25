@@ -1,10 +1,10 @@
 package br.com.caelum.brutal.brutauth.interceptors;
 
-import br.com.caelum.brutal.brutauth.auth.BrutauthReflectionComposedRule;
 import br.com.caelum.brutal.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutal.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutal.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutal.brutauth.auth.rules.CustomBrutauthRule;
+import br.com.caelum.brutal.brutauth.reflection.BrutauthReflectionComposedRule;
 import br.com.caelum.brutal.brutauth.reflection.DefaultMethodInvoker;
 import br.com.caelum.vraptor.InterceptionException;
 import br.com.caelum.vraptor.Intercepts;

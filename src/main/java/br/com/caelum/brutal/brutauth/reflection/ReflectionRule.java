@@ -1,4 +1,4 @@
-package br.com.caelum.brutal.brutauth.auth;
+package br.com.caelum.brutal.brutauth.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
