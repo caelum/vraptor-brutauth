@@ -4,7 +4,6 @@ import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.reflection.BrutauthReflectionComposedRule;
 import br.com.caelum.brutauth.reflection.DefaultMethodInvoker;
 import br.com.caelum.vraptor.InterceptionException;
 import br.com.caelum.vraptor.Intercepts;
@@ -38,28 +37,17 @@ public class CustomBrutauthRuleInterceptor implements Interceptor{
 		CustomBrutauthRules annotation = method.getMethod().getAnnotation(CustomBrutauthRules.class);
 		Class<? extends CustomBrutauthRule>[] values = annotation.value();
 		
-		BrutauthReflectionComposedRule brutauthComposedRule = null;
 		for (Class<? extends CustomBrutauthRule> value : values) {
 			CustomBrutauthRule brutauthRule = container.instanceFor(value);
-			brutauthComposedRule = compose(brutauthComposedRule, brutauthRule);
+			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParameters());
+			RuleHandler handler = handlers.getHandler(brutauthRule);
+			if(!handler.handle(allowed)){
+				return;
+			}
 		}
 		
-		boolean allowed = brutauthComposedRule.isAllowed(methodInfo.getParameters());
-		RuleHandler handler = handlers.getHandler(brutauthComposedRule);
-		if(!handler.handle(allowed)){
-			return;
-		}
 		
 		stack.next(method, resourceInstance);
-	}
-
-	private BrutauthReflectionComposedRule compose(BrutauthReflectionComposedRule brutauthComposedRule, CustomBrutauthRule brutauthRule) {
-		if(brutauthComposedRule == null){
-			brutauthComposedRule = new BrutauthReflectionComposedRule(brutauthRule, invoker);
-		}else{
-			brutauthComposedRule.and(brutauthRule);
-		}
-		return brutauthComposedRule;
 	}
 
 	@Override
