@@ -18,19 +18,16 @@ public class VarArgsMethodSearcher implements MethodSearcher {
 	@Override
 	public BrutauthMethod search(CustomBrutauthRule ruleToSearch,
 			Object... withArgs) {
-		return getBrutalMethodWithParametersToInvoke(ruleToSearch, withArgs);
-	}
-	
-	private BrutauthMethod getBrutalMethodWithParametersToInvoke(CustomBrutauthRule toInvoke, Object...args) {
 		try {
-			Method defaultMethod = defaultMethodSearcher.getMethod(toInvoke);
-			return new BrutauthMethod(fakeVarArgs(args), defaultMethod, toInvoke);
+			Method defaultMethod = defaultMethodSearcher.getMethod(ruleToSearch);
+			return new BrutauthMethod(fakeVarArgs(withArgs), defaultMethod, ruleToSearch);
 		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
+			return null;
 		}
 	}
-
+	
 	private Object[] fakeVarArgs(Object[] args) {
+		if(args == null) return fakeVarArgs(new Object[]{args});
 		return new Object[]{args};
 	}
 }

@@ -12,7 +12,7 @@ public class BrutauthMethod {
 	private final Object[] arguments;
 
 	public BrutauthMethod(Object[] arguments, Method defaultMethod, CustomBrutauthRule toInvoke) throws NoSuchMethodException, SecurityException {
-		toInvoke.getClass().getMethod(defaultMethod.getName(), getTypes(arguments));
+		checkMethod(toInvoke.getClass(), defaultMethod.getName(), arguments);
 		this.arguments = arguments;
 		this.defaultMethod = defaultMethod;
 		this.toInvoke = toInvoke;
@@ -35,6 +35,17 @@ public class BrutauthMethod {
 		return types.toString();
 	}
 
+	private void checkMethod(Class<?> toInvoke, String methodName, Object[] arguments) throws NoSuchMethodException, SecurityException {
+		if(hasNoArguments(arguments))
+			toInvoke.getMethod(methodName);
+		else
+			toInvoke.getMethod(methodName, getTypes(arguments));
+	}
+
+	private boolean hasNoArguments(Object[] arguments) {
+		return arguments == null;
+	}
+
 	private Class<?>[] getTypes(Object[] arguments) {
 		Class<?>[] types = new Class[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
@@ -42,5 +53,6 @@ public class BrutauthMethod {
 		}
 		return types;
 	}
+
 	
 }

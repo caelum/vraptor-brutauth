@@ -35,6 +35,13 @@ public class BrutauthMethodTest {
 		assertTrue(brutauthMethod.invoke());
 	}
 	
+	@Test
+	public void should_find_method_without_arguments() throws NoSuchMethodException, SecurityException {
+		Method realMethod = FakeRuleWithoutArguments.class.getMethod("isAllowed");
+		BrutauthMethod brutauthMethod = new BrutauthMethod(null, realMethod, new FakeRuleWithoutArguments());
+		assertTrue(brutauthMethod.invoke());
+	}
+	
 	private Object[] fakeArgs(Object rule) {
 		return new Object[]{rule};
 	}
@@ -45,6 +52,16 @@ public class BrutauthMethodTest {
 		}
 
 		public boolean isAllowed(Object...args){
+			return true;
+		}
+	}
+	
+	public class FakeRuleWithoutArguments implements CustomBrutauthRule{
+		public boolean isAllowed(RightFakeObject fake){
+			return true;
+		}
+		
+		public boolean isAllowed(){
 			return true;
 		}
 	}
