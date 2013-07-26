@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
+import br.com.caelum.vraptor.core.DefaultMethodInfo;
+import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Container;
 import br.com.caelum.vraptor.resource.DefaultResourceMethod;
 
@@ -18,8 +20,8 @@ public class HandlerSearcherTest {
 	private RuleSpecificHandler ruleSpecificHandler;
 	private Container container;
 	private ResourceMethodSpecificHandler resourceSpecificHandler;
-	private DefaultResourceMethod handledMethod;
-	private DefaultResourceMethod notHandledMethod;
+	private MethodInfo handledMethod;
+	private MethodInfo notHandledMethod;
 
 	@Before
 	public void setUp() throws NoSuchMethodException, SecurityException{
@@ -34,11 +36,17 @@ public class HandlerSearcherTest {
 		resourceSpecificHandler = new ResourceMethodSpecificHandler();
 		when(container.instanceFor(ResourceMethodSpecificHandler.class)).thenReturn(resourceSpecificHandler);
 		
-		handledMethod = new DefaultResourceMethod(null, TestController.class.getMethod("handled"));
-		notHandledMethod = new DefaultResourceMethod(null, TestController.class.getMethod("notHandled"));
+		handledMethod = methodInfo("handled");
+		notHandledMethod = methodInfo("notHandled");
 		
 	}
 	
+	private MethodInfo methodInfo(String methodName) throws NoSuchMethodException, SecurityException {
+		DefaultMethodInfo defaultMethodInfo = new DefaultMethodInfo();
+		defaultMethodInfo.setResourceMethod(new DefaultResourceMethod(null, TestController.class.getMethod(methodName)));
+		return defaultMethodInfo;
+	}
+
 	@Test
 	public void should_get_default_handler_if_class_doesnt_contains_annotation() {
 		HandlerSearcher handlerSearcher = new HandlerSearcher(container, notHandledMethod);

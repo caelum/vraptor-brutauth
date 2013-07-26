@@ -2,6 +2,7 @@ package br.com.caelum.brutauth.auth.handlers;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
+import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.Container;
 import br.com.caelum.vraptor.resource.ResourceMethod;
@@ -9,11 +10,11 @@ import br.com.caelum.vraptor.resource.ResourceMethod;
 @Component
 public class HandlerSearcher {
 	private final Container container;
-	private final ResourceMethod resourceMethod;
+	private ResourceMethod resourceMethod;
 
-	public HandlerSearcher(Container container, ResourceMethod resourceMethod) {
+	public HandlerSearcher(Container container, MethodInfo methodInfo) {
 		this.container = container;
-		this.resourceMethod = resourceMethod;
+		resourceMethod = methodInfo.getResourceMethod();
 	}
 	
 	public RuleHandler getHandler(BrutauthRule rule) {
