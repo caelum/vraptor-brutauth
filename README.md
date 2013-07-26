@@ -2,13 +2,12 @@ vraptor-brutauth
 ================
 
 
-Regras simples
-===
+##Regras simples
 
 Regras simples são aquelas que recebem apenas um nivel de acesso(long). 
 
-Como criar regras simples?
----
+####Como criar regras simples?
+
 
 Basta criar uma classe que implementa `SimpleBrutauthRule` e anotá-la com o `@Component` do Vraptor.
 
@@ -36,8 +35,8 @@ public class CanAccess implements SimpleBrutauthRule {
 
 ```
 
-Como usar a regra que criei?
----
+####Como usar a regra que criei?
+
 
 Você precisará anotar a action de seu controller com o `@SimpleBrutauthRules`, passando como argumento a classe de sua regra:
 
@@ -70,8 +69,8 @@ public class BrutauthController {
 
 ```
 
-Regras Customizada
-===
+##Regras Customizada
+
 
 O Brutauth oferece também o recurso de regras customizadas. A diferença delas para as regras simples é que você pode, no seu método `isAllowed`, receber como argumento qualquer coisa que a sua action receba.
 
@@ -86,7 +85,11 @@ public class BrutauthController {
 }
 ```
 
-Você poderá receber o mesmo `Car` na sua regra. Note que dessa vez a sua regra precisa implementar `CustomBrutauthRule` e também precisa ser anotada com `@Component`:
+Você poderá receber o mesmo `Car` na sua regra. 
+
+####Como criar regras customziadas?
+
+Basta implementar `CustomBrutauthRule` e também precisa ser anotada com `@Component`
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
@@ -142,8 +145,8 @@ public class BrutauthController {
 }
 ```
 
-O que fazer após a verificação da regra?
-===
+##Como alterar a ação a ser feita após verificar uma regra?
+
 
 Por padrão, o brutauth irá simplesmente devolver status `403` quando uma regra retornar false. Para alterar esse comportamento, 
 você pode criar uma classe e implementar `RuleHandler`. Por exemplo, se você quiser que quando uma regra falhar, o usuario seja redirecionado para a pagina de login, você teria um `RuleHandler` parecido com esse:
