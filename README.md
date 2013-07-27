@@ -2,7 +2,7 @@ vraptor-brutauth
 ================
 
 
-##Regras simples
+###Regras simples
 
 Regras simples são aquelas que recebem apenas um nivel de acesso(long). 
 
@@ -69,7 +69,7 @@ public class BrutauthController {
 
 ```
 
-##Regras Customizada
+###Regras Customizada
 
 
 O Brutauth oferece também o recurso de regras customizadas. A diferença delas para as regras simples é que você pode, no seu método `isAllowed`, receber como argumento qualquer coisa que a sua action receba.
@@ -145,7 +145,7 @@ public class BrutauthController {
 }
 ```
 
-##Como alterar a ação a ser feita após verificar uma regra?
+###Como alterar a ação a ser feita após verificar uma regra?
 
 
 Por padrão, o brutauth irá simplesmente devolver status `403` quando uma regra retornar false. Para alterar esse comportamento, 
@@ -191,3 +191,38 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 	}
 }
 ```
+
+###Usando um RuleHandler diferente em apenas uma action
+
+Você pode anotar a action com o mesmo `@HandledBy`, isso sobrescreverá o `RuleHandler` que foi definido na sua regra. 
+
+Então, se você tem a action
+
+```
+@Resource
+public class BrutauthController {
+	@CustomBrutauthRules(LoggedAccessRule.class)
+	@HandledBy(OtherHandler.class)
+	public void showCar(Car car){
+		//logic
+	}	
+}
+```
+
+O `RuleHandler` usado será o `OtherHandler`, mesmo se a sua regra `LoggedAccessRule` estiver anotada com um `@HandledBy`.
+
+###Varias regras em uma só action
+
+Você pode passar um array de regras para as annotations `CustomBrutauthRules` e `SimpleBrutauthRules`:
+
+```
+@Resource
+public class BrutauthController {
+	@CustomBrutauthRules({LoggedAccessRule.class, CanAccessCar.class})
+	public void showCar(Car car){
+		//logic
+	}	
+}
+```
+
+Deste modo, todas as regras serão validadas. O `RuleHandler` usado será o daquela que falhar, a não ser que a sua action esteja anotada com `@HandledBy`.
