@@ -100,7 +100,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 	
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
