@@ -1,4 +1,4 @@
-vraptor-brutauth
+VRaptor Brutauth
 ================
 
 
@@ -149,7 +149,9 @@ public class BrutauthController {
 
 
 Por padrão, o brutauth irá simplesmente devolver status `403` quando uma regra retornar false. Para alterar esse comportamento, 
-você pode criar uma classe e implementar `RuleHandler`. Por exemplo, se você quiser que quando uma regra falhar, o usuario seja redirecionado para a pagina de login, você teria um `RuleHandler` parecido com esse:
+você pode criar uma classe e implementar `RuleHandler`. 
+
+Por exemplo, se você quiser que quando determinada regra falhar o usuario seja redirecionado para a pagina de login, você teria um `RuleHandler` parecido com esse:
 
 ```
 package br.com.caelum.brutal.brutauth.auth.handlers;
