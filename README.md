@@ -69,7 +69,7 @@ public class BrutauthController {
 
 ```
 
-###Regras Customizada
+###Regras customizadas
 
 
 O Brutauth oferece também o recurso de regras customizadas. A diferença delas para as regras simples é que você pode, no seu método `isAllowed`, receber como argumento qualquer coisa que a sua action receba.
