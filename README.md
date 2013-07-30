@@ -87,7 +87,7 @@ public class BrutauthController {
 
 Você poderá receber o mesmo `Car` na sua regra. 
 
-####Como criar regras customziadas?
+####Como criar regras customizadas?
 
 Basta implementar `CustomBrutauthRule` e também precisa ser anotada com `@Component`
 
