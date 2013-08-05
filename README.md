@@ -1,6 +1,20 @@
 VRaptor Brutauth
 ================
 
+##Como Instalar?
+
+Basta adicionar as seguintes linhas ao seu pom.xml:
+
+```
+<dependency>
+	<groupId>br.com.caelum.vraptor</groupId>
+	<artifactId>vraptor-brutauth</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+##Como Usar?
+
 O VRaptor Brutauth suporta dois tipos de regras de autenticação: simples e customizadas.
 
 ###Regras simples
