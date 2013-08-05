@@ -4,13 +4,27 @@
 
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
+	
+	<name>vraptor-brutauth</name>
+	<url>https://github.com/leonardowolter/vraptor-brutauth</url>
+	<scm>
+		<url>http://github.com/leonardowolter/vraptor-brutauth</url>
+		<connection>scm:git:git://github.com/leonardowolter/vraptor-brutauth</connection>
+		<developerConnection>scm:git:git@github.com:leonardowolter/vraptor-brutauth.git</developerConnection>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+	
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
 	<dependencies>
 		<dependency>
