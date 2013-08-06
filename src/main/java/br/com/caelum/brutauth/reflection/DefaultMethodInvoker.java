@@ -5,7 +5,7 @@ import br.com.caelum.brutauth.reflection.methodsearchers.MethodSearchers;
 import br.com.caelum.vraptor.ioc.Component;
 
 @Component
-public class DefaultMethodInvoker {
+public class DefaultMethodInvoker implements MethodInvoker {
 
 		private final MethodSearchers searcher;
 
@@ -13,6 +13,7 @@ public class DefaultMethodInvoker {
 			this.searcher = searcher;
 		}
 	
+		@Override
 		public boolean invoke(CustomBrutauthRule toInvoke, Object[] args) {
 			return searcher.search(toInvoke, args).invoke();
 		}

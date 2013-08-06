@@ -1,7 +1,8 @@
 package br.com.caelum.brutauth.interceptors;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -15,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.caelum.brutauth.auth.handlers.AccessNotAllowedHandler;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
+import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
 import br.com.caelum.vraptor.core.InterceptorStack;
 import br.com.caelum.vraptor.ioc.Container;
 import br.com.caelum.vraptor.resource.ResourceMethod;
@@ -34,16 +36,19 @@ public class SimpleBrutauthRuleInterceptorTest {
 	private SimpleBrutauthRuleInterceptor interceptor;
 	private MySimpleBiggerThanZeroRule simpleRule;
 	private AccessNotAllowedHandler handler;
+	private AnotherSimpleRule anotherSimpleRule;
 
 	@Before
 	public void setUp() throws Exception {
 		controller = new MyController();
 		interceptor = new SimpleBrutauthRuleInterceptor(container, handlers);
 		simpleRule = new MySimpleBiggerThanZeroRule();
+		anotherSimpleRule = spy(new AnotherSimpleRule());
 		handler = spy(new AccessNotAllowedHandler(new MockResult()));
 
 		when(container.instanceFor(MySimpleBiggerThanZeroRule.class)).thenReturn(simpleRule);
-		when(handlers.getHandler(simpleRule)).thenReturn(handler);
+		when(container.instanceFor(AnotherSimpleRule.class)).thenReturn(anotherSimpleRule);
+		when(handlers.getHandler(any(SimpleBrutauthRule.class))).thenReturn(handler);
 	}
 	@Test
 	public void should_stop_stack_if_rule_says_so() throws Exception {
@@ -70,7 +75,7 @@ public class SimpleBrutauthRuleInterceptorTest {
 		assertTrue("should accept mySimpleRuleMethod", interceptor.accepts(controllerMethod));
 		interceptor.intercept(stack, controllerMethod, controller);
 
-		verify(handler).handle(false);
+		verify(handler).handle();
 	}
 	@Test
 	public void should_not_invoke_handler_if_allowed() throws Exception {
@@ -79,6 +84,22 @@ public class SimpleBrutauthRuleInterceptorTest {
 		assertTrue("should accept mySimpleRuleMethodWithAccessLevel", interceptor.accepts(controllerMethod));
 		interceptor.intercept(stack, controllerMethod, controller);
 
-		verify(handler, never()).handle(anyBoolean());
+		verify(handler, never()).handle();
+	}
+	@Test
+	public void should_not_invoke_second_rule_if_first_fails() throws Exception {
+		ResourceMethod controllerMethod = MyController.method("myManySimpleRulesMethod");
+		assertTrue("should accept myManySimpleRulesMethod", interceptor.accepts(controllerMethod));
+		interceptor.intercept(stack, controllerMethod, controller);
+
+		verify(anotherSimpleRule, never()).isAllowed(anyLong());
+	}
+	@Test
+	public void should_invoke_second_rule_if_first_succeeds() throws Exception {
+		ResourceMethod controllerMethod = MyController.method("myManySimpleRulesMethodWithAccessLevel");
+		assertTrue("should accept myManySimpleRulesMethodWithAccessLevel", interceptor.accepts(controllerMethod));
+		interceptor.intercept(stack, controllerMethod, controller);
+
+		verify(anotherSimpleRule).isAllowed(anyLong());
 	}
 }
