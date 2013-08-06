@@ -179,11 +179,8 @@ public class LoggedHandler implements RuleHandler{
 	}
 
 	@Override
-	public boolean handle(boolean isAllowed) {
-		if(!isAllowed){
-			result.redirectTo(AuthController.class).loginForm();
-		}
-		return isAllowed;
+	public void handle() {
+		result.redirectTo(AuthController.class).loginForm();
 	}
 }
 
@@ -207,6 +204,8 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 	}
 }
 ```
+
+E o seu `RuleHandler` será invocado quando uma regra falhar.
 
 ###Usando um RuleHandler diferente em apenas uma action
 
