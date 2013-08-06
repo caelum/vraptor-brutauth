@@ -34,7 +34,7 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 					argsToUse[i] = arg;
 				}
 			}
-			if(argsToUse[i] == null) throw new NoSuchMethodException("O metodo do seu controller não recebe todos os argumentos que o isAllowed espera!");
+			if(argsToUse[i] == null) throw new IllegalArgumentException("Your resource method should recieve all the parameters that your rule needs: "+ types);
 		}
 		return argsToUse;
 	}

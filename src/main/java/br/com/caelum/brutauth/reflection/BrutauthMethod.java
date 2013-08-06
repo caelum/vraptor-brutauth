@@ -26,6 +26,10 @@ public class BrutauthMethod {
 			throw new RuntimeException("Não consegui chamar o metodo "+ toInvoke.getClass().getSimpleName()+ "#" + defaultMethod.getName() + " com parametros dos tipos: "+ getStringTypes(arguments));
 		}
 	}
+	
+	public Method getMethod() {
+		return defaultMethod;
+	}
 
 	private String getStringTypes(Object[] arguments) {
 		StringBuilder types = new StringBuilder();
