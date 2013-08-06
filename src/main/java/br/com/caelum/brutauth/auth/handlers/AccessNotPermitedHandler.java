@@ -13,9 +13,8 @@ public class AccessNotPermitedHandler implements RuleHandler{
 	}
 	
 	@Override
-	public boolean handle(boolean isAllowed) {
-		if(!isAllowed) result.use(http()).sendError(403);
-		return isAllowed;
+	public void handle() {
+		result.use(http()).sendError(403);
 	}
 
 }

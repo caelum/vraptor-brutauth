@@ -39,7 +39,8 @@ public class SimpleBrutauthRuleInterceptor implements Interceptor {
 		for (Class<? extends SimpleBrutauthRule> permission : permissions) {
 			SimpleBrutauthRule rule = container.instanceFor(permission);
 			RuleHandler handler = handlers.getHandler(rule);
-			if (!handler.handle(rule.isAllowed(permissionData))) {
+			if(!rule.isAllowed(permissionData)){
+				handler.handle();
 				return;
 			}
 		}

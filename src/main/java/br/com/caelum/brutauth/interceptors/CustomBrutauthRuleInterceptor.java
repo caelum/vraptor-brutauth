@@ -41,12 +41,12 @@ public class CustomBrutauthRuleInterceptor implements Interceptor{
 			CustomBrutauthRule brutauthRule = container.instanceFor(value);
 			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParameters());
 			RuleHandler handler = handlers.getHandler(brutauthRule);
-			if(!handler.handle(allowed)){
+			if(!allowed){
+				handler.handle();
 				return;
 			}
+			
 		}
-		
-		
 		stack.next(method, resourceInstance);
 	}
 

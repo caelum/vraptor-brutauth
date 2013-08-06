@@ -78,15 +78,13 @@ public class HandlerSearcherTest {
 	
 	public class RuleSpecificHandler implements RuleHandler{
 		@Override
-		public boolean handle(boolean isAllowed) {
-			return false;
+		public void handle() {
 		}
 	}
 
 	public class ResourceMethodSpecificHandler implements RuleHandler{
 		@Override
-		public boolean handle(boolean isAllowed) {
-			return false;
+		public void handle() {
 		}
 	}
 	
