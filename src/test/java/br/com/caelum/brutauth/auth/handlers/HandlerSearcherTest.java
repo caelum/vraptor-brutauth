@@ -16,7 +16,7 @@ import br.com.caelum.vraptor.resource.DefaultResourceMethod;
 
 public class HandlerSearcherTest {
 
-	private AccessNotPermitedHandler defaultHandler;
+	private AccessNotAllowedHandler defaultHandler;
 	private RuleSpecificHandler ruleSpecificHandler;
 	private Container container;
 	private ResourceMethodSpecificHandler resourceSpecificHandler;
@@ -27,8 +27,8 @@ public class HandlerSearcherTest {
 	public void setUp() throws NoSuchMethodException, SecurityException{
 		container = mock(Container.class);
 		
-		defaultHandler = new AccessNotPermitedHandler(null);
-		when(container.instanceFor(AccessNotPermitedHandler.class)).thenReturn(defaultHandler);
+		defaultHandler = new AccessNotAllowedHandler(null);
+		when(container.instanceFor(AccessNotAllowedHandler.class)).thenReturn(defaultHandler);
 		
 		ruleSpecificHandler = new RuleSpecificHandler();
 		when(container.instanceFor(RuleSpecificHandler.class)).thenReturn(ruleSpecificHandler);

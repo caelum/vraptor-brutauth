@@ -28,7 +28,7 @@ public class HandlerSearcher {
 			return container.instanceFor(handledBy.value());		
 		}
 		
-		return container.instanceFor(AccessNotPermitedHandler.class);
+		return container.instanceFor(AccessNotAllowedHandler.class);
 	}
 	
 	private boolean resourceMethodContainsSpecificHandler(
