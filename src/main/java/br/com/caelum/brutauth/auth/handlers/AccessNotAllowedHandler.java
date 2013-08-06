@@ -5,10 +5,10 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.ioc.Component;
 
 @Component
-public class AccessNotPermitedHandler implements RuleHandler{
+public class AccessNotAllowedHandler implements RuleHandler{
 	private final Result result;
 
-	public AccessNotPermitedHandler(Result result) {
+	public AccessNotAllowedHandler(Result result) {
 		this.result = result;
 	}
 	
