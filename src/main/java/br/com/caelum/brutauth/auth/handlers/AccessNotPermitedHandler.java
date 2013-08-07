@@ -1,17 +1,15 @@
 package br.com.caelum.brutauth.auth.handlers;
 
-import static br.com.caelum.vraptor.view.Results.http;
-import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.ioc.Component;
+import static br.com.caelum.vraptor4.view.Results.http;
 
-@Component
-public class AccessNotPermitedHandler implements RuleHandler{
-	private final Result result;
+import javax.inject.Inject;
 
-	public AccessNotPermitedHandler(Result result) {
-		this.result = result;
-	}
-	
+import br.com.caelum.vraptor4.Result;
+
+public class AccessNotPermitedHandler implements RuleHandler {
+
+	@Inject private Result result;
+
 	@Override
 	public void handle() {
 		result.use(http()).sendError(403);

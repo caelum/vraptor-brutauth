@@ -2,18 +2,15 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class MethodSearchers {
-	private final List<MethodSearcher> searchers;
 
-	public MethodSearchers(List<MethodSearcher> searchers) {
-		this.searchers = searchers;
-	}
-	
+	@Inject private List<MethodSearcher> searchers;
+
 	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Object...withArgs){
 		for (MethodSearcher searcher : searchers) {
 			BrutauthMethod brutauthMethod = searcher.search(ruleToSearch, withArgs);

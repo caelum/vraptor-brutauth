@@ -1,18 +1,14 @@
 package br.com.caelum.brutauth.reflection;
 
+import javax.inject.Inject;
+
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.methodsearchers.MethodSearchers;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class DefaultMethodInvoker {
 
-		private final MethodSearchers searcher;
+		@Inject private MethodSearchers searcher;
 
-		public DefaultMethodInvoker(MethodSearchers searcher) {
-			this.searcher = searcher;
-		}
-	
 		public boolean invoke(CustomBrutauthRule toInvoke, Object[] args) {
 			return searcher.search(toInvoke, args).invoke();
 		}

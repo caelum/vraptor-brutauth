@@ -1,39 +1,45 @@
 package br.com.caelum.brutauth.auth.handlers;
 
+import javax.inject.Inject;
+
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
-import br.com.caelum.vraptor.core.MethodInfo;
-import br.com.caelum.vraptor.ioc.Component;
-import br.com.caelum.vraptor.ioc.Container;
-import br.com.caelum.vraptor.resource.ResourceMethod;
+import br.com.caelum.vraptor4.ioc.Container;
+import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
 
-@Component
 public class HandlerSearcher {
-	private final Container container;
-	private ResourceMethod resourceMethod;
 
-	public HandlerSearcher(Container container, MethodInfo methodInfo) {
+	private Container container;
+	private ControllerMethod controllerMethod;
+
+	@Deprecated // CDI eyes only
+	public HandlerSearcher() {}
+
+	@Inject
+	public HandlerSearcher(Container container,
+				ControllerMethod controllerMethod) {
+
 		this.container = container;
-		resourceMethod = methodInfo.getResourceMethod();
+		this.controllerMethod = controllerMethod;
 	}
-	
+
 	public RuleHandler getHandler(BrutauthRule rule) {
-		if(resourceMethodContainsSpecificHandler(resourceMethod)){
-			HandledBy handledBy = resourceMethod.getMethod().getAnnotation(HandledBy.class);
+		if(controllerMethodContainsSpecificHandler(controllerMethod)){
+			HandledBy handledBy = controllerMethod.getMethod().getAnnotation(HandledBy.class);
 			return container.instanceFor(handledBy.value());
 		}
-	
+
 		if(ruleContainsSpecificHandler(rule)){
 			HandledBy handledBy = rule.getClass().getAnnotation(HandledBy.class);
-			return container.instanceFor(handledBy.value());		
+			return container.instanceFor(handledBy.value());
 		}
-		
+
 		return container.instanceFor(AccessNotPermitedHandler.class);
 	}
-	
-	private boolean resourceMethodContainsSpecificHandler(
-			ResourceMethod resourceMethod) {
-		return resourceMethod.getMethod().isAnnotationPresent(HandledBy.class);
+
+	private boolean controllerMethodContainsSpecificHandler(
+			ControllerMethod controllerMethod) {
+		return controllerMethod.getMethod().isAnnotationPresent(HandledBy.class);
 	}
 
 	private boolean ruleContainsSpecificHandler(BrutauthRule rule) {

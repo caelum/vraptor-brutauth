@@ -2,19 +2,15 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 
 import java.lang.reflect.Method;
 
+import javax.inject.Inject;
+
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class AdaptedMethodSearcher implements MethodSearcher {
 
-	private final DefaultMethodSearcher defaultMethodSearcher;
+	@Inject private DefaultMethodSearcher defaultMethodSearcher;
 
-	public AdaptedMethodSearcher(DefaultMethodSearcher defaultMethodSearcher) {
-		this.defaultMethodSearcher = defaultMethodSearcher;
-	}
-	
 	@Override
 	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Object... withArgs) {
 		try {
