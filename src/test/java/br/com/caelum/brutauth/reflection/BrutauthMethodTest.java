@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import org.junit.Test;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.reflection.BrutauthMethod;
 
 public class BrutauthMethodTest {
 
