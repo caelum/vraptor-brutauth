@@ -222,7 +222,7 @@ public class BrutauthController {
 ```
 The `RuleHandler` to be used will be the `OtherHandler`, even if your rule contains other `@HandledBy` annotation.
 
-###Many rules in an action.
+###Many rules in an action
 
 If you pass an array as argument to both `@CustomBrutauthRules` nor `@SimpleBrutauthRules`, all of then will be evaluated:
 
@@ -236,4 +236,19 @@ public class BrutauthController {
 }
 ```
 
-All the rules will be verified from left to right, until one of then fails or all of then succeeds. The `RuleHandler` used will be the one defined at the `@HandledBy` of the rule that returned false unless you defined other handler at the action.
+All the rules will be verified from left to right, until one of then fails or all of then succeeds. 
+The `RuleHandler` used will be the one defined at the `@HandledBy` of the rule that returned false 
+unless you defined other handler at the action.
+
+###Using rules in view
+
+To verify if a rule is satisfied in the view, use the object `rules`. For example:
+
+```
+<c:if test="${rules[CanAccessCar].isAllowed(car)}">
+	<a href="brutauth/showCar">Show car</a>
+</c:if>
+```
+
+
+

@@ -240,3 +240,13 @@ public class BrutauthController {
 ```
 
 Deste modo, todas as regras serão validadas da esquerda para a direita, até uma delas falhar ou todas permitirem o acesso. O `RuleHandler` usado será o daquela que falhar, a não ser que a sua action esteja anotada com `@HandledBy`.
+
+###Usando as regras na view
+
+Para verificar se uma regra é satisfeita na view, use o objeto `rules`. Por exemplo:
+
+```
+<c:if test="${rules[CanAccessCar].isAllowed(car)}">
+	<a href="brutauth/showCar">Show car</a>
+</c:if>
+```
