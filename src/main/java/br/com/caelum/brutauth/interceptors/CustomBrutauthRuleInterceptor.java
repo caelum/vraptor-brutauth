@@ -7,14 +7,13 @@ import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.DefaultMethodInvoker;
-import br.com.caelum.vraptor4.AroundCall;
 import br.com.caelum.vraptor4.InterceptionException;
 import br.com.caelum.vraptor4.Intercepts;
+import br.com.caelum.vraptor4.core.InterceptorStack;
 import br.com.caelum.vraptor4.core.MethodInfo;
-import br.com.caelum.vraptor4.interceptor.AcceptsWithAnnotations;
 import br.com.caelum.vraptor4.interceptor.ExecuteMethodInterceptor;
+import br.com.caelum.vraptor4.interceptor.Interceptor;
 import br.com.caelum.vraptor4.interceptor.ParametersInstantiatorInterceptor;
-import br.com.caelum.vraptor4.interceptor.SimpleInterceptorStack;
 import br.com.caelum.vraptor4.ioc.Container;
 import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
 
@@ -22,8 +21,7 @@ import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
 	before=ExecuteMethodInterceptor.class,
 	after=ParametersInstantiatorInterceptor.class
 )
-@AcceptsWithAnnotations(CustomBrutauthRules.class)
-public class CustomBrutauthRuleInterceptor {
+public class CustomBrutauthRuleInterceptor implements Interceptor {
 
 	@Inject private Container container;
 	@Inject private MethodInfo methodInfo;
@@ -31,11 +29,12 @@ public class CustomBrutauthRuleInterceptor {
 	@Inject private HandlerSearcher handlers;
 	@Inject private ControllerMethod method;
 
-	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) throws InterceptionException {
+	@Override
+	public void intercept(InterceptorStack stack, ControllerMethod method,
+			Object controllerInstance) throws InterceptionException {
 		CustomBrutauthRules annotation = method.getMethod().getAnnotation(CustomBrutauthRules.class);
 		Class<? extends CustomBrutauthRule>[] values = annotation.value();
-
+		
 		for (Class<? extends CustomBrutauthRule> value : values) {
 			CustomBrutauthRule brutauthRule = container.instanceFor(value);
 			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParameters());
@@ -45,6 +44,11 @@ public class CustomBrutauthRuleInterceptor {
 				return;
 			}
 		}
-		stack.next();
+		stack.next(method, controllerInstance);
+	}
+
+	@Override
+	public boolean accepts(ControllerMethod method) {
+		return method.containsAnnotation(CustomBrutauthRules.class);
 	}
 }

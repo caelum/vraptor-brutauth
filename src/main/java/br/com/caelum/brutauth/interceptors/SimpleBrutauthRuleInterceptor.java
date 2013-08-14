@@ -9,25 +9,23 @@ import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
-import br.com.caelum.vraptor4.AroundCall;
 import br.com.caelum.vraptor4.InterceptionException;
 import br.com.caelum.vraptor4.Intercepts;
-import br.com.caelum.vraptor4.interceptor.AcceptsWithAnnotations;
-import br.com.caelum.vraptor4.interceptor.SimpleInterceptorStack;
+import br.com.caelum.vraptor4.core.InterceptorStack;
+import br.com.caelum.vraptor4.interceptor.Interceptor;
 import br.com.caelum.vraptor4.ioc.Container;
 import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
 
 @Intercepts
-@AcceptsWithAnnotations(SimpleBrutauthRules.class)
-public class SimpleBrutauthRuleInterceptor {
+public class SimpleBrutauthRuleInterceptor implements Interceptor {
 
 	@Inject private Container container;
 	@Inject private HandlerSearcher handlers;
 	@Inject private ControllerMethod method;
 
-	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) throws InterceptionException {
-
+	@Override
+	public void intercept(InterceptorStack stack, ControllerMethod method,
+			Object controllerInstance) throws InterceptionException {
 		Method controllerMethod = method.getMethod();
 		SimpleBrutauthRules permissionAnnotation = controllerMethod.getAnnotation(SimpleBrutauthRules.class);
 		Class<? extends SimpleBrutauthRule>[] permissions = permissionAnnotation.value();
@@ -43,7 +41,15 @@ public class SimpleBrutauthRuleInterceptor {
 				return;
 			}
 		}
-		stack.next();
+		stack.next(method, controllerInstance);
+		
 	}
+
+	@Override
+	public boolean accepts(ControllerMethod method) {
+		return method.containsAnnotation(SimpleBrutauthRules.class);
+	}
+	
+	
 
 }
