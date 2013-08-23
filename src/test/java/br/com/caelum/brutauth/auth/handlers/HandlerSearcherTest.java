@@ -13,8 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
+import br.com.caelum.vraptor4.controller.ControllerMethod;
 import br.com.caelum.vraptor4.ioc.Container;
-import br.com.caelum.vraptor4.restfulie.controller.ControllerMethod;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HandlerSearcherTest {
