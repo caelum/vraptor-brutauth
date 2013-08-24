@@ -30,7 +30,7 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 		Object[] argsToUse = new Object[types.length];
 		for (int i = 0; i < types.length; i++) {
 			for (Object arg : args) {
-				if(arg.getClass().isAssignableFrom(types[i])){
+				if (arg != null && arg.getClass().isAssignableFrom(types[i])){
 					argsToUse[i] = arg;
 				}
 			}

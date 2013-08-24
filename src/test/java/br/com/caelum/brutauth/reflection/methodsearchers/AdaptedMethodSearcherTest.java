@@ -45,6 +45,13 @@ public class AdaptedMethodSearcherTest {
 		
 		assertMatchedMethod(method);
 	}
+	
+	@Test
+	public void should_ignore_nulls() {
+		BrutauthMethod method = adaptedMethodSearcher.search(new CatRule(), new Cat(), null);
+		
+		assertMatchedMethod(method);
+	}
 
 
 	private void assertMatchedMethod(BrutauthMethod method) {
