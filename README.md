@@ -135,7 +135,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
@@ -191,7 +191,7 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	public LoggedAccessRule(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
@@ -242,7 +242,7 @@ unless you defined other handler at the action.
 
 ###Using rules in view
 
-To verify if a rule is satisfied in the view, use the object `rules`. For example:
+If you are running in a servlet 3 container, you can verify if a rule is satisfied in the view, using the object `rules`. For example:
 
 ```
 <c:if test="${rules[CanAccessCar].isAllowed(car)}">
