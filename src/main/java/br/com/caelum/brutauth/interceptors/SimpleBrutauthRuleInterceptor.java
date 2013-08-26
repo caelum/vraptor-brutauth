@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.interceptors;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
@@ -29,14 +30,25 @@ public class SimpleBrutauthRuleInterceptor implements Interceptor {
 	public void intercept(InterceptorStack stack, ResourceMethod method,
 			Object resourceInstance) throws InterceptionException {
 		
-		SimpleBrutauthRules permissionAnnotation = method.getMethod().getAnnotation(SimpleBrutauthRules.class);
-		Class<? extends SimpleBrutauthRule>[] permissions = permissionAnnotation.value();
+		ArrayList<Class<? extends SimpleBrutauthRule>> rules = new ArrayList<>();
+		
+		Class<?> controllerType = method.getResource().getType();
+		if (containsAnnotation(controllerType)) {
+			SimpleBrutauthRules annotation = controllerType.getAnnotation(SimpleBrutauthRules.class);
+			rules.addAll(Arrays.asList(annotation.value()));
+		}
+		
+		if (method.containsAnnotation(SimpleBrutauthRules.class)) {
+			SimpleBrutauthRules annotation = method.getMethod().getAnnotation(SimpleBrutauthRules.class);
+			rules.addAll(Arrays.asList(annotation.value()));
+		}
+		
 		long permissionData = 0l;
 		Arrays.asList(method.getMethod().getAnnotations());
 		if (method.containsAnnotation(AccessLevel.class)) {
 			permissionData = method.getMethod().getAnnotation(AccessLevel.class).value();
 		}
-		for (Class<? extends SimpleBrutauthRule> permission : permissions) {
+		for (Class<? extends SimpleBrutauthRule> permission : rules) {
 			SimpleBrutauthRule rule = container.instanceFor(permission);
 			RuleHandler handler = handlers.getHandler(rule);
 			if(!rule.isAllowed(permissionData)){
@@ -47,6 +59,10 @@ public class SimpleBrutauthRuleInterceptor implements Interceptor {
 		stack.next(method, resourceInstance);
 	}
 
+	private boolean containsAnnotation(Class<?> type) {
+		return type.isAnnotationPresent(SimpleBrutauthRules.class);
+	}
+	
 	@Override
 	public boolean accepts(ResourceMethod method) {
 		return method.containsAnnotation(SimpleBrutauthRules.class);
