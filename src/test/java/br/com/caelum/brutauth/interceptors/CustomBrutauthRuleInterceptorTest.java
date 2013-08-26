@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.interceptors;
 
+import static br.com.caelum.brutauth.util.TestUtils.method;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -21,13 +22,10 @@ import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.AccessNotAllowedHandler;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.interceptors.CustomBrutauthRuleInterceptorTest.TrueCustomRule;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
 import br.com.caelum.vraptor.core.InterceptorStack;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Container;
-import br.com.caelum.vraptor.resource.DefaultResourceClass;
-import br.com.caelum.vraptor.resource.DefaultResourceMethod;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.util.test.MockResult;
 
@@ -156,12 +154,6 @@ public class CustomBrutauthRuleInterceptorTest {
 		verify(trueCustomRule).isAllowed(anyString());
 	}
 
-	private static ResourceMethod method(Class<?> clazz, String name) {
-		return new DefaultResourceMethod(
-				new DefaultResourceClass(clazz),
-				new Mirror().on(clazz).reflect().method(name).withAnyArgs());
-	}
-	
 	
 	@CustomBrutauthRules({MyCustomRule.class})
 	public class ControllerWithRules{

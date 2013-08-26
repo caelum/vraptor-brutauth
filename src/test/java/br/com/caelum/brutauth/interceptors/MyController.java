@@ -1,11 +1,9 @@
 package br.com.caelum.brutauth.interceptors;
 
-import net.vidageek.mirror.dsl.Mirror;
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
-import br.com.caelum.vraptor.resource.DefaultResourceClass;
-import br.com.caelum.vraptor.resource.DefaultResourceMethod;
+import br.com.caelum.brutauth.util.TestUtils;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 
 class MyController {
@@ -31,4 +29,8 @@ class MyController {
 
 	@CustomBrutauthRules({MyCustomRule.class, AnotherCustomRule.class})
 	public void myManyCustomRulesMethod(String myString) {}
+
+	public static ResourceMethod method(String method) {
+		return TestUtils.method(MyController.class, method);
+	}
 }
