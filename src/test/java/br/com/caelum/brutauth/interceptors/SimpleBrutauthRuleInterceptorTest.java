@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.interceptors;
 
+import static br.com.caelum.brutauth.util.TestUtils.method;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -42,7 +43,7 @@ public class SimpleBrutauthRuleInterceptorTest {
 	public void setUp() throws Exception {
 		controller = new MyController();
 		interceptor = new SimpleBrutauthRuleInterceptor(container, handlers);
-		simpleRule = new MySimpleBiggerThanZeroRule();
+		simpleRule = spy(new MySimpleBiggerThanZeroRule());
 		anotherSimpleRule = spy(new AnotherSimpleRule());
 		handler = spy(new AccessNotAllowedHandler(new MockResult()));
 
@@ -101,5 +102,13 @@ public class SimpleBrutauthRuleInterceptorTest {
 		interceptor.intercept(stack, controllerMethod, controller);
 
 		verify(anotherSimpleRule).isAllowed(anyLong());
+	}
+	@Test
+	public void should_add_controllers_class_rules() throws Exception {
+		ResourceMethod controllerMethod = method(ControllerWithRules.class, "methodWithoutRules");
+		assertTrue("should accept ControllerWithRules", interceptor.accepts(controllerMethod));
+		interceptor.intercept(stack, controllerMethod, controller);
+		
+		verify(simpleRule).isAllowed(anyLong());
 	}
 }

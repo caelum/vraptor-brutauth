@@ -18,7 +18,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.AccessNotAllowedHandler;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
@@ -154,17 +153,6 @@ public class CustomBrutauthRuleInterceptorTest {
 		verify(trueCustomRule).isAllowed(anyString());
 	}
 
-	
-	@CustomBrutauthRules({MyCustomRule.class})
-	public class ControllerWithRules{
-		
-		public void methodWithoutRules(){
-		}
-		
-		@CustomBrutauthRules(TrueCustomRule.class)
-		public void methodWithRules(){
-		}
-	}
 	
 	
 	public class TrueCustomRule implements CustomBrutauthRule{

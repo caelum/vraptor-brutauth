@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
+import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
@@ -65,7 +66,7 @@ public class SimpleBrutauthRuleInterceptor implements Interceptor {
 	
 	@Override
 	public boolean accepts(ResourceMethod method) {
-		return method.containsAnnotation(SimpleBrutauthRules.class);
+		return method.containsAnnotation(SimpleBrutauthRules.class)  || method.getResource().getType().isAnnotationPresent(SimpleBrutauthRules.class);
 	}
 
 }
