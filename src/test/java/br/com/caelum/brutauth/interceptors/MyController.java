@@ -12,12 +12,6 @@ class MyController {
 	public static final String MY_STRING = "Brutauth rulez";
 	public static final String UNNACCEPTABLE_STRING = "Brutauth suckz";
 
-	public static ResourceMethod method(String name) {
-		return new DefaultResourceMethod(
-				new DefaultResourceClass(MyController.class),
-				new Mirror().on(MyController.class).reflect().method(name).withAnyArgs());
-	}
-
 	@SimpleBrutauthRules(MySimpleBiggerThanZeroRule.class)
 	public void mySimpleRuleMethod() {}
 

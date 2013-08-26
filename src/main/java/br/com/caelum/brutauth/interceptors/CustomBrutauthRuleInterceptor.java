@@ -1,5 +1,8 @@
 package br.com.caelum.brutauth.interceptors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
@@ -34,10 +37,22 @@ public class CustomBrutauthRuleInterceptor implements Interceptor{
 	@Override
 	public void intercept(InterceptorStack stack, ResourceMethod method,
 			Object resourceInstance) throws InterceptionException {
-		CustomBrutauthRules annotation = method.getMethod().getAnnotation(CustomBrutauthRules.class);
-		Class<? extends CustomBrutauthRule>[] values = annotation.value();
 		
-		for (Class<? extends CustomBrutauthRule> value : values) {
+
+		ArrayList<Class<? extends CustomBrutauthRule>> rules = new ArrayList<>();
+		
+		Class<?> controllerType = method.getResource().getType();
+		if (containsAnnotation(controllerType)) {
+			CustomBrutauthRules annotation = controllerType.getAnnotation(CustomBrutauthRules.class);
+			rules.addAll(Arrays.asList(annotation.value()));
+		}
+		
+		if (method.containsAnnotation(CustomBrutauthRules.class)) {
+			CustomBrutauthRules annotation = method.getMethod().getAnnotation(CustomBrutauthRules.class);
+			rules.addAll(Arrays.asList(annotation.value()));
+		}
+		
+		for (Class<? extends CustomBrutauthRule> value : rules) {
 			CustomBrutauthRule brutauthRule = container.instanceFor(value);
 			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParameters());
 			RuleHandler handler = handlers.getHandler(brutauthRule);
@@ -50,8 +65,12 @@ public class CustomBrutauthRuleInterceptor implements Interceptor{
 		stack.next(method, resourceInstance);
 	}
 
+	private boolean containsAnnotation(Class<?> type) {
+		return type.isAnnotationPresent(CustomBrutauthRules.class);
+	}
+
 	@Override
 	public boolean accepts(ResourceMethod method) {
-		return method.containsAnnotation(CustomBrutauthRules.class);
+		return method.containsAnnotation(CustomBrutauthRules.class) || method.getResource().getType().isAnnotationPresent(CustomBrutauthRules.class);
 	}
 }

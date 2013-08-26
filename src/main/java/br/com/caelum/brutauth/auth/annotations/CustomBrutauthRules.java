@@ -7,8 +7,7 @@ import java.lang.annotation.Target;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomBrutauthRules {
-	Class<? extends CustomBrutauthRule>[] value();
+	Class<? extends CustomBrutauthRule>[] value() ;
 }

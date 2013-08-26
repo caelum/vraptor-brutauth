@@ -17,13 +17,17 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.handlers.AccessNotAllowedHandler;
 import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
+import br.com.caelum.brutauth.interceptors.CustomBrutauthRuleInterceptorTest.TrueCustomRule;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
 import br.com.caelum.vraptor.core.InterceptorStack;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Container;
+import br.com.caelum.vraptor.resource.DefaultResourceClass;
+import br.com.caelum.vraptor.resource.DefaultResourceMethod;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.util.test.MockResult;
 
@@ -52,10 +56,10 @@ public class CustomBrutauthRuleInterceptorTest {
 	@Before
 	public void setUp() throws Exception {
 		controller = new MyController();
-		singleRuleControllerMethod = MyController.method("myCustomRuleMethod");
-		manyRulesControllerMethod = MyController.method("myManyCustomRulesMethod");
+		singleRuleControllerMethod = method(MyController.class, "myCustomRuleMethod");
+		manyRulesControllerMethod = method(MyController.class, "myManyCustomRulesMethod");
 		interceptor = new CustomBrutauthRuleInterceptor(container, methodInfo, invoker, handlers);
-		customRule = new MyCustomRule();
+		customRule = spy(new MyCustomRule());
 		anotherCustomRule = spy(new AnotherCustomRule());
 		handler = spy(new AccessNotAllowedHandler(new MockResult()));
 
@@ -124,5 +128,56 @@ public class CustomBrutauthRuleInterceptorTest {
 		interceptor.intercept(stack, manyRulesControllerMethod, controller);
 
 		verify(anotherCustomRule).isAllowed(anyString());
+	}
+	@Test
+	public void should_add_controllers_class_rules() throws Exception {
+		ResourceMethod controllerWithRulesMethod = method(ControllerWithRules.class, "methodWithoutRules");
+		
+		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		
+		assertTrue("should accept ControllerWithRules", interceptor.accepts(controllerWithRulesMethod));
+		interceptor.intercept(stack, controllerWithRulesMethod, controller);
+		
+		verify(customRule).isAllowed(anyString());
+	}
+
+	@Test
+	public void should_add_controllers_class_and_method_rules() throws Exception {
+		ResourceMethod controllerWithRulesMethod = method(ControllerWithRules.class, "methodWithRules");
+		
+		TrueCustomRule trueCustomRule = spy(new TrueCustomRule());
+		when(container.instanceFor(TrueCustomRule.class)).thenReturn(trueCustomRule);
+		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		
+		assertTrue("should accept ControllerWithRules", interceptor.accepts(controllerWithRulesMethod));
+		interceptor.intercept(stack, controllerWithRulesMethod, controller);
+		
+		verify(customRule).isAllowed(anyString());
+		verify(trueCustomRule).isAllowed(anyString());
+	}
+
+	private static ResourceMethod method(Class<?> clazz, String name) {
+		return new DefaultResourceMethod(
+				new DefaultResourceClass(clazz),
+				new Mirror().on(clazz).reflect().method(name).withAnyArgs());
+	}
+	
+	
+	@CustomBrutauthRules({MyCustomRule.class})
+	public class ControllerWithRules{
+		
+		public void methodWithoutRules(){
+		}
+		
+		@CustomBrutauthRules(TrueCustomRule.class)
+		public void methodWithRules(){
+		}
+	}
+	
+	
+	public class TrueCustomRule implements CustomBrutauthRule{
+		public boolean isAllowed(String string) {
+			return true;
+		}
 	}
 }
