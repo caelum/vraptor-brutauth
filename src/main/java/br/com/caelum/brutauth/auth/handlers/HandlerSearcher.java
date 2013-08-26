@@ -5,6 +5,7 @@ import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.Container;
+import br.com.caelum.vraptor.resource.ResourceClass;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 
 @Component
@@ -18,8 +19,15 @@ public class HandlerSearcher {
 	}
 	
 	public RuleHandler getHandler(BrutauthRule rule) {
+		
 		if(resourceMethodContainsSpecificHandler(resourceMethod)){
 			HandledBy handledBy = resourceMethod.getMethod().getAnnotation(HandledBy.class);
+			return container.instanceFor(handledBy.value());
+		}
+
+		ResourceClass resource = resourceMethod.getResource();
+		if(resourceClassContainsSpecificHandler(resource)){
+			HandledBy handledBy = resource.getType().getAnnotation(HandledBy.class);
 			return container.instanceFor(handledBy.value());
 		}
 	
@@ -31,6 +39,11 @@ public class HandlerSearcher {
 		return container.instanceFor(AccessNotAllowedHandler.class);
 	}
 	
+	private boolean resourceClassContainsSpecificHandler(
+			ResourceClass resourceClass) {
+		return resourceClass.getType().isAnnotationPresent(HandledBy.class);
+	}
+
 	private boolean resourceMethodContainsSpecificHandler(
 			ResourceMethod resourceMethod) {
 		return resourceMethod.getMethod().isAnnotationPresent(HandledBy.class);

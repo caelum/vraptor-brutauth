@@ -8,10 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
+import br.com.caelum.brutauth.auth.handlers.HandlerSearcherTest.ResourceClassSpecificHandler;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.vraptor.core.DefaultMethodInfo;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Container;
+import br.com.caelum.vraptor.resource.DefaultResourceClass;
 import br.com.caelum.vraptor.resource.DefaultResourceMethod;
 
 public class HandlerSearcherTest {
@@ -19,9 +21,12 @@ public class HandlerSearcherTest {
 	private AccessNotAllowedHandler defaultHandler;
 	private RuleSpecificHandler ruleSpecificHandler;
 	private Container container;
-	private ResourceMethodSpecificHandler resourceSpecificHandler;
+	private ResourceMethodSpecificHandler resourceMethodSpecificHandler;
 	private MethodInfo handledMethod;
 	private MethodInfo notHandledMethod;
+	private MethodInfo handledWithoutHandledMethodController;
+	private MethodInfo handledController;
+	private ResourceClassSpecificHandler resourceClassSpecificHandler;
 
 	@Before
 	public void setUp() throws NoSuchMethodException, SecurityException{
@@ -33,17 +38,22 @@ public class HandlerSearcherTest {
 		ruleSpecificHandler = new RuleSpecificHandler();
 		when(container.instanceFor(RuleSpecificHandler.class)).thenReturn(ruleSpecificHandler);
 		
-		resourceSpecificHandler = new ResourceMethodSpecificHandler();
-		when(container.instanceFor(ResourceMethodSpecificHandler.class)).thenReturn(resourceSpecificHandler);
+		resourceMethodSpecificHandler = new ResourceMethodSpecificHandler();
+		when(container.instanceFor(ResourceMethodSpecificHandler.class)).thenReturn(resourceMethodSpecificHandler);
 		
-		handledMethod = methodInfo("handled");
-		notHandledMethod = methodInfo("notHandled");
+		resourceClassSpecificHandler = new ResourceClassSpecificHandler();
+		when(container.instanceFor(ResourceClassSpecificHandler.class)).thenReturn(resourceClassSpecificHandler);
+		
+		handledMethod = methodInfo("handled", NotHandledController.class);
+		notHandledMethod = methodInfo("notHandled", NotHandledController.class);
+		handledController = methodInfo("handled", HandledController.class);
+		handledWithoutHandledMethodController = methodInfo("notHandled", HandledController.class);
 		
 	}
 	
-	private MethodInfo methodInfo(String methodName) throws NoSuchMethodException, SecurityException {
+	private MethodInfo methodInfo(String methodName, Class<?> controller) throws NoSuchMethodException, SecurityException {
 		DefaultMethodInfo defaultMethodInfo = new DefaultMethodInfo();
-		defaultMethodInfo.setResourceMethod(new DefaultResourceMethod(null, TestController.class.getMethod(methodName)));
+		defaultMethodInfo.setResourceMethod(new DefaultResourceMethod(new DefaultResourceClass(controller), controller.getMethod(methodName)));
 		return defaultMethodInfo;
 	}
 
@@ -66,7 +76,21 @@ public class HandlerSearcherTest {
 	public void should_ignore_rule_handler_if_resource_method_has_handledby_annotation() {
 		HandlerSearcher handlerSearcher = new HandlerSearcher(container, handledMethod);
 		RuleWithSpecificHandlers rule = new RuleWithSpecificHandlers();
-		assertEquals(resourceSpecificHandler, handlerSearcher.getHandler(rule));
+		assertEquals(resourceMethodSpecificHandler, handlerSearcher.getHandler(rule));
+	}
+	
+	@Test
+	public void should_ignore_rule_handler_if_resource_class_has_handledby_annotation() {
+		HandlerSearcher handlerSearcher = new HandlerSearcher(container, handledWithoutHandledMethodController);
+		RuleWithSpecificHandlers rule = new RuleWithSpecificHandlers();
+		assertEquals(resourceClassSpecificHandler, handlerSearcher.getHandler(rule));
+	}
+	
+	@Test
+	public void should_ignore_resource_class_handler_if_resource_method_has_handledby_annotation() {
+		HandlerSearcher handlerSearcher = new HandlerSearcher(container, handledController);
+		RuleWithSpecificHandlers rule = new RuleWithSpecificHandlers();
+		assertEquals(resourceMethodSpecificHandler, handlerSearcher.getHandler(rule));
 	}
 
 	public class RuleWithoutSpecificHandlers implements BrutauthRule{
@@ -88,12 +112,27 @@ public class HandlerSearcherTest {
 		}
 	}
 	
-	public class TestController{
+	public class ResourceClassSpecificHandler implements RuleHandler{
+		@Override
+		public void handle() {
+		}
+	}
+	
+	public class NotHandledController{
 		@HandledBy(ResourceMethodSpecificHandler.class)
 		public void handled() {
 		}
 
 		public void notHandled() {
+		}
+	}
+	
+	@HandledBy(ResourceClassSpecificHandler.class)
+	public class HandledController{
+		public void notHandled() {
+		}
+		@HandledBy(ResourceMethodSpecificHandler.class)
+		public void handled() {
 		}
 	}
 }
