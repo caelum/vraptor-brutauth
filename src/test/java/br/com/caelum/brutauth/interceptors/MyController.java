@@ -6,7 +6,7 @@ import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.util.TestUtils;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 
-class MyController {
+public class MyController {
 	public static final String MY_STRING = "Brutauth rulez";
 	public static final String UNNACCEPTABLE_STRING = "Brutauth suckz";
 
@@ -32,5 +32,9 @@ class MyController {
 
 	public static ResourceMethod method(String method) {
 		return TestUtils.method(MyController.class, method);
+	}
+	
+	public static BrutauthClassOrMethod brutauthMethod(String method) {
+		return TestUtils.brutauthMethod(MyController.class, method);
 	}
 }
