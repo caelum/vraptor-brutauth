@@ -10,7 +10,7 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.Container;
 
 @Component
-public class SimpleBrutauthRulesVerifier {
+public class SimpleBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	private final HandlerSearcher handlers;
 	private final Container container;
 

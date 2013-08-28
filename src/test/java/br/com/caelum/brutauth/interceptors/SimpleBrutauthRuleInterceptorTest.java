@@ -2,9 +2,7 @@ package br.com.caelum.brutauth.interceptors;
 
 import static br.com.caelum.brutauth.util.TestUtils.method;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,15 +28,11 @@ public class SimpleBrutauthRuleInterceptorTest {
 
 	private MyController controller;
 	private SimpleBrutauthRuleInterceptor interceptor;
-	private MySimpleBiggerThanZeroRule simpleRule;
-	private AnotherSimpleRule anotherSimpleRule;
 
 	@Before
 	public void setUp() throws Exception {
 		controller = new MyController();
 		interceptor = new SimpleBrutauthRuleInterceptor(verifier);
-		simpleRule = spy(new MySimpleBiggerThanZeroRule());
-		anotherSimpleRule = spy(new AnotherSimpleRule());
 	}
 	
 	@Test
