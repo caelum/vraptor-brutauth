@@ -7,8 +7,10 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
 import br.com.caelum.vraptor.core.MethodInfo;
+import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.Container;
 
+@Component
 public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 
 	private final Container container;
