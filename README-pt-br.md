@@ -1,7 +1,7 @@
 VRaptor Brutauth
 ================
 
-VRaptor Brutauth fornece um jeito fácil e prático de verificar permissões de acesso em determinada action e/ou controller quando usando VRaptor
+VRaptor Brutauth fornece um jeito fácil e prático de verificar permissões de acesso(autorização) em determinada action e/ou controller quando usando VRaptor
 
 
 ##Como Instalar?
