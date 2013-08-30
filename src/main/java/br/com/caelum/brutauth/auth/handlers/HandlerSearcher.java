@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
+import br.com.caelum.vraptor4.controller.BeanClass;
 import br.com.caelum.vraptor4.controller.ControllerMethod;
 import br.com.caelum.vraptor4.ioc.Container;
 
@@ -16,9 +17,7 @@ public class HandlerSearcher {
 	public HandlerSearcher() {}
 
 	@Inject
-	public HandlerSearcher(Container container,
-				ControllerMethod controllerMethod) {
-
+	public HandlerSearcher(Container container, ControllerMethod controllerMethod) {
 		this.container = container;
 		this.controllerMethod = controllerMethod;
 	}
@@ -28,18 +27,29 @@ public class HandlerSearcher {
 			HandledBy handledBy = controllerMethod.getMethod().getAnnotation(HandledBy.class);
 			return container.instanceFor(handledBy.value());
 		}
-
+		
+		BeanClass resource = controllerMethod.getController();
+		if(resourceClassContainsSpecificHandler(resource)){
+			HandledBy handledBy = resource.getType().getAnnotation(HandledBy.class);
+			return container.instanceFor(handledBy.value());
+		}
+	
 		if(ruleContainsSpecificHandler(rule)){
 			HandledBy handledBy = rule.getClass().getAnnotation(HandledBy.class);
 			return container.instanceFor(handledBy.value());
 		}
 
-		return container.instanceFor(AccessNotPermitedHandler.class);
+		return container.instanceFor(AccessNotAllowedHandler.class);
 	}
 
 	private boolean controllerMethodContainsSpecificHandler(
 			ControllerMethod controllerMethod) {
 		return controllerMethod.getMethod().isAnnotationPresent(HandledBy.class);
+	}
+	
+	private boolean resourceClassContainsSpecificHandler(
+			BeanClass beanClass) {
+		return beanClass.getType().isAnnotationPresent(HandledBy.class);
 	}
 
 	private boolean ruleContainsSpecificHandler(BrutauthRule rule) {

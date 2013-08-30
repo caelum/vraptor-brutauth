@@ -1,53 +1,48 @@
 package br.com.caelum.brutauth.interceptors;
 
-import java.lang.reflect.Method;
-
 import javax.inject.Inject;
 
-import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
-import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
-import br.com.caelum.brutauth.auth.handlers.RuleHandler;
-import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
+import br.com.caelum.brutauth.verifier.SimpleBrutauthRulesVerifier;
 import br.com.caelum.vraptor4.InterceptionException;
 import br.com.caelum.vraptor4.Intercepts;
 import br.com.caelum.vraptor4.controller.ControllerMethod;
 import br.com.caelum.vraptor4.core.InterceptorStack;
 import br.com.caelum.vraptor4.interceptor.Interceptor;
-import br.com.caelum.vraptor4.ioc.Container;
 
 @Intercepts
 public class SimpleBrutauthRuleInterceptor implements Interceptor {
-
-	@Inject private Container container;
-	@Inject private HandlerSearcher handlers;
-	@Inject private ControllerMethod method;
-
+	private SimpleBrutauthRulesVerifier verifier;
+	
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	public SimpleBrutauthRuleInterceptor() {
+		this(null);
+	}
+	
+	@Inject 
+	public SimpleBrutauthRuleInterceptor(SimpleBrutauthRulesVerifier verifier) {
+		this.verifier = verifier;
+	}
+	
 	@Override
 	public void intercept(InterceptorStack stack, ControllerMethod method,
 			Object controllerInstance) throws InterceptionException {
-		Method controllerMethod = method.getMethod();
-		SimpleBrutauthRules permissionAnnotation = controllerMethod.getAnnotation(SimpleBrutauthRules.class);
-		Class<? extends SimpleBrutauthRule>[] permissions = permissionAnnotation.value();
-		long permissionData = 0l;
-		if (method.containsAnnotation(AccessLevel.class)) {
-			permissionData = controllerMethod.getAnnotation(AccessLevel.class).value();
-		}
-		for (Class<? extends SimpleBrutauthRule> permission : permissions) {
-			SimpleBrutauthRule rule = container.instanceFor(permission);
-			RuleHandler handler = handlers.getHandler(rule);
-			if(!rule.isAllowed(permissionData)){
-				handler.handle();
-				return;
-			}
-		}
+		
+		BrutauthClassOrMethod controllerType = new BrutauthClassOrMethod(method.getController().getType());
+		if(!verifier.rulesOfTypeAllows(controllerType)) return;
+		
+		BrutauthClassOrMethod methodType = new BrutauthClassOrMethod(method.getMethod());
+		if(!verifier.rulesOfTypeAllows(methodType)) return;
+		
 		stack.next(method, controllerInstance);
 		
 	}
 
 	@Override
 	public boolean accepts(ControllerMethod method) {
-		return method.containsAnnotation(SimpleBrutauthRules.class);
+		return method.containsAnnotation(SimpleBrutauthRules.class)  || method.getController().getType().isAnnotationPresent(SimpleBrutauthRules.class);
 	}
 	
 	

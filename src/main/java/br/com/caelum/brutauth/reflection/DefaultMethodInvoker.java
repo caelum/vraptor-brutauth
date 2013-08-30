@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.methodsearchers.MethodSearchers;
 
-public class DefaultMethodInvoker {
+public class DefaultMethodInvoker implements MethodInvoker {
 
 		@Inject private MethodSearchers searcher;
 

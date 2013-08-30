@@ -23,8 +23,12 @@ public class BrutauthMethod {
 			return (boolean) defaultMethod.invoke(toInvoke, arguments);
 		} catch (IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			throw new RuntimeException("Não consegui chamar o metodo "+ toInvoke.getClass().getSimpleName()+ "#" + defaultMethod.getName() + " com parametros dos tipos: "+ getStringTypes(arguments));
+			throw new RuntimeException("Não consegui chamar o metodo "+ toInvoke.getClass().getSimpleName()+ "#" + defaultMethod.getName() + " com parametros dos tipos: "+ getStringTypes(arguments), e);
 		}
+	}
+	
+	public Method getMethod() {
+		return defaultMethod;
 	}
 
 	private String getStringTypes(Object[] arguments) {

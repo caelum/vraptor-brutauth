@@ -1,9 +1,9 @@
 VRaptor Brutauth
 ================
 
-##Como Instalar?
+##How to Install?
 
-Basta adicionar as seguintes linhas ao seu pom.xml:
+You can download vraptor-brutauth.jar from maven repository or configured in any compatible tool: 
 
 ```
 <dependency>
@@ -13,20 +13,19 @@ Basta adicionar as seguintes linhas ao seu pom.xml:
 </dependency>
 ```
 
-##Como Usar?
+##How to Use?
 
-O VRaptor Brutauth suporta dois tipos de regras de autenticação: simples e customizadas.
+VRaptor Brutauth suports two authentication rule types: simple and custom.
 
-###Regras simples
+###Simple Rules
 
-Regras simples são aquelas que autorizam o acesso a um recurso baseadas apenas em um nível de acesso (um long).
+Simple Rules are the ones that uses only an access level to authorize.
 
-####Como criar regras simples?
+####How to create Simple Rules?
 
+You only need to create a class that implements `SimpleBrutauthRule` and annotate it with VRaptor's `@Component`.
 
-Basta criar uma classe que implementa `SimpleBrutauthRule` e anotá-la com o `@Component` do VRaptor.
-
-ex:
+e.g.:
 
 ```
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
@@ -50,10 +49,9 @@ public class CanAccess implements SimpleBrutauthRule {
 
 ```
 
-####Como usar a regra que criei?
+####How to use my rule?
 
-
-Você precisará anotar a action de seu controller com o `@SimpleBrutauthRules` passando como argumento a classe de sua regra:
+Annotate your action with `@SimpleBrutauthRules`, passing as argument your rule's class:
 
 ```
 @Resource
@@ -67,8 +65,9 @@ public class BrutauthController {
 
 ```
 
-Para passar o accessLevel necessário para sua regra, basta anotar a action com `@AccessLevel` com o valor necessário.
-O resultado será parecido com:
+To define the necessary accessLevel to your rule, annotate the action with `@AccessLevel`, with the necessary value.
+
+The result will be like:
 
 ```
 
@@ -84,12 +83,12 @@ public class BrutauthController {
 
 ```
 
-###Regras customizadas
+###Custom Rules
 
+The VRaptor Brutauth also has the Custom Rules feature. The difference between the custom and simple rules is that with the custom ones, you can recieve as arguments anything that your action recieves.
 
-O Brutauth oferece também o recurso de regras customizadas. A diferença delas para as regras simples é que você pode, no seu método `isAllowed`, receber como argumento qualquer coisa que a sua action receba.
-
-Ou seja, se você tem uma action que recebe um objeto do tipo `Car`:
+e.g.
+Consider an action which recieves an argument of type `Car`:
 
 ```
 @Resource
@@ -100,11 +99,11 @@ public class BrutauthController {
 }
 ```
 
-Você poderá receber o mesmo `Car` na sua regra.
+You will be able to recieve the same `Car` in your `isAllowed` method.
 
-####Como criar regras customizadas?
+####How to create custom rules?
 
-Basta implementar `CustomBrutauthRule`. Sua classe também precisa ser anotada com `@Component`
+Just create a class that implements `CustomBrutauthRule`, with the VRaptor's `@Component` annotation.
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
@@ -125,7 +124,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 }
 ```
 
-Por padrão, o nome do metodo deve ser `isAllowed` mas, se quiser usar outro nome, você pode anotar o metodo com `@BrutauthValidation`:
+By default, the method name should be `isAllowed` but, if you want to, you can use annother name annotating the method with `@BrutauthValidation`
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
@@ -136,7 +135,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
@@ -146,8 +145,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 	}
 }
 ```
-
-E não se esqueça de anotar sua action com `@CustomBrutauthRules(CanAccessCar.class)`:
+Don't forget to annotate your action with `@CustomBrutauthRules(CanAccessCar.class)`:
 
 ```
 @Resource
@@ -160,16 +158,15 @@ public class BrutauthController {
 }
 ```
 
-###Como alterar a ação a ser feita após verificar uma regra?
+###How to customize the framework behaviour when isAllowed returns false?
 
+By default, the VRaptor Brutauth will always return status `403` when a rule return false. To customize this behaviour, you must create a class that implements `RuleHandler`.
 
-Por padrão, o vraptor-brutauth simplesmente devolverá um status `403` quando uma regra retornar false. Para alterar esse comportamento,
-você pode criar uma classe e implementar `RuleHandler`.
+e.g.:
 
-Por exemplo, se você quiser que quando determinada regra falhar o usuario seja redirecionado para a página de login, você teria um `RuleHandler` parecido com esse:
+If you want the framework to redirect the user to the login form when a rule fails. Your `RuleHandler` would be something like:
 
 ```
-package br.com.caelum.brutal.brutauth.auth.handlers;
 @Component
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
@@ -179,17 +176,13 @@ public class LoggedHandler implements RuleHandler{
 	}
 
 	@Override
-	public boolean handle(boolean isAllowed) {
-		if(!isAllowed){
-			result.redirectTo(AuthController.class).loginForm();
-		}
-		return isAllowed;
+	public void handle() {
+		result.redirectTo(AuthController.class).loginForm();
 	}
 }
 
 ```
-
-Agora você só precisa anotar a sua regra com `@HandledBy(LoggedHandler.class)`:
+Now you just need to add the `@HandledBy(LoggedHandler.class)` annotation to your rule:
 
 ```
 @Component
@@ -198,7 +191,7 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	public LoggedAccessRule(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
@@ -207,12 +200,15 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 	}
 }
 ```
+And your `RuleHandler` will be invoked when that rule fails.
 
-###Usando um RuleHandler diferente em apenas uma action
+###Using a different RuleHandler at a specific action
 
-Você pode anotar a action com o mesmo `@HandledBy`. Isso sobrescreverá o `RuleHandler` que foi definido na sua regra.
+You can add the same `@HandledBy` annotation to your controller action. It will overwrite your rule's handler:
 
-Então, se você tem a action
+e.g.:
+
+Suppose the following action:
 
 ```
 @Resource
@@ -224,12 +220,11 @@ public class BrutauthController {
 	}
 }
 ```
+The `RuleHandler` to be used will be the `OtherHandler`, even if your rule contains other `@HandledBy` annotation.
 
-O `RuleHandler` usado será o `OtherHandler`, mesmo se a sua regra `LoggedAccessRule` estiver anotada com um `@HandledBy`.
+###Many rules in an action
 
-###Várias regras em uma só action
-
-Você pode passar um array de regras para as annotations `CustomBrutauthRules` e `SimpleBrutauthRules`:
+If you pass an array as argument to both `@CustomBrutauthRules` nor `@SimpleBrutauthRules`, all of then will be evaluated:
 
 ```
 @Resource
@@ -241,4 +236,19 @@ public class BrutauthController {
 }
 ```
 
-Deste modo, todas as regras serão validadas da esquerda para a direita, até uma delas falhar ou todas permitirem o acesso. O `RuleHandler` usado será o daquela que falhar, a não ser que a sua action esteja anotada com `@HandledBy`.
+All the rules will be verified from left to right, until one of then fails or all of then succeeds. 
+The `RuleHandler` used will be the one defined at the `@HandledBy` of the rule that returned false 
+unless you defined other handler at the action.
+
+###Using rules in view
+
+If you are running in a servlet 3 container, you can verify if a rule is satisfied in the view, using the object `rules`. For example:
+
+```
+<c:if test="${rules[CanAccessCar].isAllowed(car)}">
+	<a href="brutauth/showCar">Show car</a>
+</c:if>
+```
+
+
+
