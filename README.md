@@ -160,6 +160,41 @@ public class BrutauthController {
 }
 ```
 
+###What if I need to limit the access of an entire controller?
+
+To do this, you do not need to annotate each method with the required rule. You just need to annotate the controller:
+
+```
+@Resource
+@SimpleBrutauthRules(CanAccess.class)
+public class BrutauthController {
+	public void somePage(){
+		//logic
+	}
+
+	public void otherPage(){
+		//logic
+	}
+}
+```
+Doing this, to access anyone of the methods in that controller, the rule `CanAccess.class` needs to be satisfied.
+
+It also works with `@CustomBrutauthRules`:
+
+```
+@Resource
+@CustomBrutauthRules(CanAccessCar.class)
+public class CarController {
+	public void showCar(Car car){
+		//logic
+	}
+
+	public void editCar(Car car){
+		//logic
+	}
+}
+```
+
 ###How to customize the framework behaviour when isAllowed returns false?
 
 By default, the VRaptor Brutauth will always return status `403` when a rule return false. To customize this behaviour, you must create a class that implements `RuleHandler`.
