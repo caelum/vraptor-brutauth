@@ -1,6 +1,8 @@
 VRaptor Brutauth
 ================
 
+VRaptor Brutauth provides an easy way to verify permission to access a specific action nor controller when using VRaptor.
+
 ##How to Install?
 
 You can download vraptor-brutauth.jar from maven repository or configured in any compatible tool: 
