@@ -30,7 +30,7 @@ public class BrutauthMethod {
 	public Method getMethod() {
 		return defaultMethod;
 	}
-	
+
 	private String getStringTypes(Object[] arguments) {
 		StringBuilder types = new StringBuilder();
 		for (Object argument : arguments) {

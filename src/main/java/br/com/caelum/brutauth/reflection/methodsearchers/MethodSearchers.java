@@ -13,8 +13,8 @@ public class MethodSearchers {
 	public MethodSearchers(List<MethodSearcher> searchers) {
 		this.searchers = searchers;
 	}
-
-	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Argument...withArgs){
+	
+	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Object...withArgs){
 		for (MethodSearcher searcher : searchers) {
 			BrutauthMethod brutauthMethod = searcher.search(ruleToSearch, withArgs);
 			if(brutauthMethod != null) return brutauthMethod;
