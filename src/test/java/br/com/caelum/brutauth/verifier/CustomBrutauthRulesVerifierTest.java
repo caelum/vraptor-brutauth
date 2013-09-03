@@ -27,8 +27,10 @@ import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 import br.com.caelum.brutauth.interceptors.ControllerWithRules;
 import br.com.caelum.brutauth.interceptors.MyController;
 import br.com.caelum.brutauth.interceptors.MyCustomRule;
+import br.com.caelum.brutauth.parameters.RequestArgumentsParser;
+import br.com.caelum.brutauth.reflection.Arguments;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
-import br.com.caelum.vraptor.core.MethodInfo;
+import br.com.caelum.brutauth.reflection.methodsearchers.Argument;
 import br.com.caelum.vraptor.ioc.Container;
 import br.com.caelum.vraptor.util.test.MockResult;
 
@@ -40,7 +42,7 @@ public class CustomBrutauthRulesVerifierTest {
 	@Mock
 	private HandlerSearcher handlers;
 	@Mock
-	private MethodInfo methodInfo;
+	private RequestArgumentsParser parser;
 	@Mock
 	private MethodInvoker invoker;
 
@@ -55,7 +57,7 @@ public class CustomBrutauthRulesVerifierTest {
 	public void setUp() throws Exception {
 		singleRuleControllerMethod = brutauthMethod(MyController.class, "myCustomRuleMethod");
 		manyRulesControllerMethod = brutauthMethod(MyController.class, "myManyCustomRulesMethod");
-		verifier = new CustomBrutauthRulesVerifier(container, methodInfo, invoker, handlers);
+		verifier = new CustomBrutauthRulesVerifier(container, invoker, handlers, parser);
 		customRule = spy(new MyCustomRule());
 		anotherCustomRule = spy(new AnotherCustomRule());
 		handler = spy(new AccessNotAllowedHandler(new MockResult()));
@@ -63,11 +65,11 @@ public class CustomBrutauthRulesVerifierTest {
 		when(container.instanceFor(MyCustomRule.class)).thenReturn(customRule);
 		when(container.instanceFor(AnotherCustomRule.class)).thenReturn(anotherCustomRule);
 		when(handlers.getHandler(any(CustomBrutauthRule.class))).thenReturn(handler);
-		when(invoker.invoke(any(CustomBrutauthRule.class), any(Object[].class))).then(new Answer<Boolean>() {
+		when(invoker.invoke(any(CustomBrutauthRule.class), any(Argument[].class))).then(new Answer<Boolean>() {
 			@Override
 			public Boolean answer(InvocationOnMock invocation) throws Throwable {
 				Object rule = invocation.getArguments()[0];
-				Object[] args = (Object[]) invocation.getArguments()[1];
+				Object[] args = new Arguments((Argument[]) invocation.getArguments()[1]).toValuesOnly();
 				return (Boolean) new Mirror().on(rule).invoke().method("isAllowed").withArgs(args);
 			}
 		});
@@ -75,7 +77,7 @@ public class CustomBrutauthRulesVerifierTest {
 
 	@Test
 	public void should_invoke_handler_if_not_allowed() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
+		when(parser.parseArguments()).thenReturn(new Argument[] { new Argument("variable", MyController.UNNACCEPTABLE_STRING) });
 
 		assertFalse("should not allow", verifier.rulesOfTypeAllows(singleRuleControllerMethod));
 
@@ -84,7 +86,7 @@ public class CustomBrutauthRulesVerifierTest {
 
 	@Test
 	public void should_not_invoke_handler_if_allowed() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(parser.parseArguments()).thenReturn(new Argument[] { new Argument("variable", MyController.MY_STRING) });
 
 		assertTrue("should allow", verifier.rulesOfTypeAllows(singleRuleControllerMethod));
 
@@ -93,7 +95,7 @@ public class CustomBrutauthRulesVerifierTest {
 	
 	@Test
 	public void should_not_invoke_second_rule_if_first_fails() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
+		when(parser.parseArguments()).thenReturn(new Argument[] { new Argument("variable", MyController.UNNACCEPTABLE_STRING) });
 
 		assertFalse("should not allow", verifier.rulesOfTypeAllows(manyRulesControllerMethod));
 
@@ -102,7 +104,7 @@ public class CustomBrutauthRulesVerifierTest {
 	
 	@Test
 	public void should_invoke_second_rule_if_first_succeeds() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(parser.parseArguments()).thenReturn(new Argument[] { new Argument("variable", MyController.MY_STRING) });
 
 		assertFalse("should allow", verifier.rulesOfTypeAllows(manyRulesControllerMethod));
 
@@ -114,7 +116,7 @@ public class CustomBrutauthRulesVerifierTest {
 	public void should_add_controllers_class_rules() throws Exception {
 		BrutauthClassOrMethod controllerWithRules = new BrutauthClassOrMethod(ControllerWithRules.class);
 		
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(parser.parseArguments()).thenReturn(new Argument[] { new Argument("variable", MyController.MY_STRING) });
 		
 		assertTrue("should accept ControllerWithRules", verifier.rulesOfTypeAllows(controllerWithRules));
 		
