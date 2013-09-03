@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.reflection.methodsearchers.Argument;
 
 public class BrutauthMethod {
 
@@ -30,14 +29,6 @@ public class BrutauthMethod {
 	
 	public Method getMethod() {
 		return defaultMethod;
-	}
-	
-	private Object[] toValuesOnly(Argument[] args) {
-		Object[] values = new Object[args.length];
-		for (int i = 0; i < args.length; i++) {
-			values[i] = args[i].getArgument();
-		}
-		return values;
 	}
 
 	private String getStringTypes(Object[] arguments) {

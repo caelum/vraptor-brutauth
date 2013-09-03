@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.reflection.Arguments;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
 
 public class VarArgsMethodSearcher implements MethodSearcher {
@@ -21,17 +20,18 @@ public class VarArgsMethodSearcher implements MethodSearcher {
 	}
 
 	@Override
-	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Argument... withArgs) {
-		Object[] argsToUse = new Arguments(withArgs).toValuesOnly();
+	public BrutauthMethod search(CustomBrutauthRule ruleToSearch,
+			Object... withArgs) {
 		try {
 			Method defaultMethod = defaultMethodSearcher.getMethod(ruleToSearch);
-			return new BrutauthMethod(fakeVarArgs(argsToUse), defaultMethod, ruleToSearch);
+			return new BrutauthMethod(fakeVarArgs(withArgs), defaultMethod, ruleToSearch);
 		} catch (NoSuchMethodException e) {
 			return null;
 		}
 	}
 
 	private Object[] fakeVarArgs(Object[] args) {
+		if(args == null) return fakeVarArgs(new Object[]{args});
 		return new Object[]{args};
 	}
 }
