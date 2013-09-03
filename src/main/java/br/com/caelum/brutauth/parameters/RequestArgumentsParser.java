@@ -7,7 +7,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.caelum.brutauth.reflection.methodsearchers.Argument;
+import br.com.caelum.vraptor.ioc.Component;
 
+@Component
 public class RequestArgumentsParser {
 
 	private HttpServletRequest request;
