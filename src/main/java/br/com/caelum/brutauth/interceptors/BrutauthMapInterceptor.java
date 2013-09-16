@@ -4,12 +4,12 @@ import java.util.List;
 
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.brutauth.util.RulesMap;
-import br.com.caelum.vraptor4.InterceptionException;
-import br.com.caelum.vraptor4.Intercepts;
-import br.com.caelum.vraptor4.Result;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
-import br.com.caelum.vraptor4.core.InterceptorStack;
-import br.com.caelum.vraptor4.interceptor.Interceptor;
+import br.com.caelum.vraptor.InterceptionException;
+import br.com.caelum.vraptor.Intercepts;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.core.InterceptorStack;
+import br.com.caelum.vraptor.interceptor.Interceptor;
 
 @Intercepts
 public class BrutauthMapInterceptor implements Interceptor {

@@ -4,7 +4,7 @@ import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.util.TestUtils;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
+import br.com.caelum.vraptor.controller.ControllerMethod;
 
 public class MyController {
 	public static final String MY_STRING = "Brutauth rulez";

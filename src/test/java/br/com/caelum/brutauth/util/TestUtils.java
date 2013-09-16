@@ -4,9 +4,9 @@ import java.lang.reflect.Method;
 
 import net.vidageek.mirror.dsl.Mirror;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
-import br.com.caelum.vraptor4.controller.DefaultBeanClass;
-import br.com.caelum.vraptor4.controller.DefaultControllerMethod;
+import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.controller.DefaultBeanClass;
+import br.com.caelum.vraptor.controller.DefaultControllerMethod;
 
 public class TestUtils {
 

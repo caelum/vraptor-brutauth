@@ -15,8 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.caelum.brutauth.verifier.SimpleBrutauthRulesVerifier;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
-import br.com.caelum.vraptor4.core.InterceptorStack;
+import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.core.InterceptorStack;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleBrutauthRuleInterceptorTest {

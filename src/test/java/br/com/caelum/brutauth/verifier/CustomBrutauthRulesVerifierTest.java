@@ -28,9 +28,9 @@ import br.com.caelum.brutauth.interceptors.ControllerWithRules;
 import br.com.caelum.brutauth.interceptors.MyController;
 import br.com.caelum.brutauth.interceptors.MyCustomRule;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
-import br.com.caelum.vraptor4.core.MethodInfo;
-import br.com.caelum.vraptor4.ioc.Container;
-import br.com.caelum.vraptor4.util.test.MockResult;
+import br.com.caelum.vraptor.core.MethodInfo;
+import br.com.caelum.vraptor.ioc.Container;
+import br.com.caelum.vraptor.util.test.MockResult;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomBrutauthRulesVerifierTest {

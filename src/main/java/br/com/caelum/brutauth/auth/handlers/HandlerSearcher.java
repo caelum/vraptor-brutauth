@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
-import br.com.caelum.vraptor4.controller.BeanClass;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
-import br.com.caelum.vraptor4.ioc.Container;
+import br.com.caelum.vraptor.controller.BeanClass;
+import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.ioc.Container;
 
 public class HandlerSearcher {
 

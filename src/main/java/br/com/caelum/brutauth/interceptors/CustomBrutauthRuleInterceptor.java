@@ -4,13 +4,13 @@ import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.verifier.CustomBrutauthRulesVerifier;
-import br.com.caelum.vraptor4.InterceptionException;
-import br.com.caelum.vraptor4.Intercepts;
-import br.com.caelum.vraptor4.controller.ControllerMethod;
-import br.com.caelum.vraptor4.core.InterceptorStack;
-import br.com.caelum.vraptor4.interceptor.ExecuteMethodInterceptor;
-import br.com.caelum.vraptor4.interceptor.Interceptor;
-import br.com.caelum.vraptor4.interceptor.ParametersInstantiatorInterceptor;
+import br.com.caelum.vraptor.InterceptionException;
+import br.com.caelum.vraptor.Intercepts;
+import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.core.InterceptorStack;
+import br.com.caelum.vraptor.interceptor.ExecuteMethodInterceptor;
+import br.com.caelum.vraptor.interceptor.Interceptor;
+import br.com.caelum.vraptor.interceptor.ParametersInstantiatorInterceptor;
 
 @Intercepts(
 	before=ExecuteMethodInterceptor.class,

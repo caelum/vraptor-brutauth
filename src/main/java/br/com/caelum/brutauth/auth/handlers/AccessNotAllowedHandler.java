@@ -1,10 +1,11 @@
 package br.com.caelum.brutauth.auth.handlers;
 
-import static br.com.caelum.vraptor4.view.Results.http;
+import static br.com.caelum.vraptor.view.Results.http;
 
 import javax.inject.Inject;
 
-import br.com.caelum.vraptor4.Result;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 
 public class AccessNotAllowedHandler implements RuleHandler {
 

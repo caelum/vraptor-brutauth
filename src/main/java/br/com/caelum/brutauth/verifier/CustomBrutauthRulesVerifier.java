@@ -8,8 +8,8 @@ import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
-import br.com.caelum.vraptor4.core.MethodInfo;
-import br.com.caelum.vraptor4.ioc.Container;
+import br.com.caelum.vraptor.core.MethodInfo;
+import br.com.caelum.vraptor.ioc.Container;
 
 public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 

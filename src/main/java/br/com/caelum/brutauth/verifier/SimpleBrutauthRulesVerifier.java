@@ -8,7 +8,7 @@ import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
 import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
-import br.com.caelum.vraptor4.ioc.Container;
+import br.com.caelum.vraptor.ioc.Container;
 
 public class SimpleBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	private final HandlerSearcher handlers;
