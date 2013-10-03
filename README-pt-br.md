@@ -1,6 +1,9 @@
 VRaptor Brutauth
 ================
 
+VRaptor Brutauth fornece um jeito fácil e prático de verificar permissões de acesso(autorização) em determinada action e/ou controller quando usando VRaptor
+
+
 ##Como Instalar?
 
 Basta adicionar as seguintes linhas ao seu pom.xml:
@@ -155,6 +158,41 @@ public class BrutauthController {
 
 	@CustomBrutauthRules(CanAccessCar.class)
 	public void showCar(Car car){
+		//logic
+	}
+}
+```
+
+###E se eu quiser limitar o acesso de um controller inteiro?
+
+Para isso, você não precisa anotar cada método com a regra necessária. Basta anotar o controller:
+
+```
+@Resource
+@SimpleBrutauthRules(CanAccess.class)
+public class BrutauthController {
+	public void somePage(){
+		//logic
+	}
+
+	public void otherPage(){
+		//logic
+	}
+}
+```
+Assim, ao tentar acessar qualquer método desse controller, a regra `CanAccess.class` terá de ser satisfeita
+
+E isso também funciona com o `@CustomBrutauthRules`:
+
+```
+@Resource
+@CustomBrutauthRules(CanAccessCar.class)
+public class CarController {
+	public void showCar(Car car){
+		//logic
+	}
+
+	public void editCar(Car car){
 		//logic
 	}
 }
