@@ -1,7 +1,7 @@
 package br.com.caelum.brutauth.reflection.methodsearchers;
 
-import java.util.List;
-
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
@@ -9,7 +9,7 @@ import br.com.caelum.brutauth.reflection.BrutauthMethod;
 
 public class MethodSearchers {
 
-	@Inject private List<MethodSearcher> searchers;
+	@Inject @Any private Instance<MethodSearcher> searchers;
 
 	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Object...withArgs){
 		for (MethodSearcher searcher : searchers) {

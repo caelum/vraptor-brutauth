@@ -1,9 +1,6 @@
 package br.com.caelum.brutauth.auth.handlers;
 
 import static br.com.caelum.brutauth.util.TestUtils.method;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Method;
 
@@ -11,6 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
