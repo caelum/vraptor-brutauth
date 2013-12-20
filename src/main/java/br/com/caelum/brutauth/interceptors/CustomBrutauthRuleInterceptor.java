@@ -8,14 +8,9 @@ import br.com.caelum.vraptor.InterceptionException;
 import br.com.caelum.vraptor.Intercepts;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.core.InterceptorStack;
-import br.com.caelum.vraptor.interceptor.ExecuteMethodInterceptor;
 import br.com.caelum.vraptor.interceptor.Interceptor;
-import br.com.caelum.vraptor.interceptor.ParametersInstantiatorInterceptor;
 
-@Intercepts(
-	before=ExecuteMethodInterceptor.class,
-	after=ParametersInstantiatorInterceptor.class
-)
+@Intercepts
 public class CustomBrutauthRuleInterceptor implements Interceptor {
 
 	private CustomBrutauthRulesVerifier verifier;
