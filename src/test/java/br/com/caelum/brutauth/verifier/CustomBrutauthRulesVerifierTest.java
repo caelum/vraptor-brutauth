@@ -75,7 +75,7 @@ public class CustomBrutauthRulesVerifierTest {
 
 	@Test
 	public void should_invoke_handler_if_not_allowed() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
+		when(methodInfo.getParametersValues()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
 
 		assertFalse("should not allow", verifier.rulesOfTypeAllows(singleRuleControllerMethod));
 
@@ -84,7 +84,7 @@ public class CustomBrutauthRulesVerifierTest {
 
 	@Test
 	public void should_not_invoke_handler_if_allowed() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(methodInfo.getParametersValues()).thenReturn(new Object[] { MyController.MY_STRING });
 
 		assertTrue("should allow", verifier.rulesOfTypeAllows(singleRuleControllerMethod));
 
@@ -93,7 +93,7 @@ public class CustomBrutauthRulesVerifierTest {
 	
 	@Test
 	public void should_not_invoke_second_rule_if_first_fails() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
+		when(methodInfo.getParametersValues()).thenReturn(new Object[] { MyController.UNNACCEPTABLE_STRING });
 
 		assertFalse("should not allow", verifier.rulesOfTypeAllows(manyRulesControllerMethod));
 
@@ -102,7 +102,7 @@ public class CustomBrutauthRulesVerifierTest {
 	
 	@Test
 	public void should_invoke_second_rule_if_first_succeeds() throws Exception {
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(methodInfo.getParametersValues()).thenReturn(new Object[] { MyController.MY_STRING });
 
 		assertFalse("should allow", verifier.rulesOfTypeAllows(manyRulesControllerMethod));
 
@@ -114,7 +114,7 @@ public class CustomBrutauthRulesVerifierTest {
 	public void should_add_controllers_class_rules() throws Exception {
 		BrutauthClassOrMethod controllerWithRules = new BrutauthClassOrMethod(ControllerWithRules.class);
 		
-		when(methodInfo.getParameters()).thenReturn(new Object[] { MyController.MY_STRING });
+		when(methodInfo.getParametersValues()).thenReturn(new Object[] { MyController.MY_STRING });
 		
 		assertTrue("should accept ControllerWithRules", verifier.rulesOfTypeAllows(controllerWithRules));
 		

@@ -49,7 +49,7 @@ public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	private boolean rulesAllows(Class<? extends CustomBrutauthRule>[] rules) {
 		for (Class<? extends CustomBrutauthRule> rule : rules) {
 			CustomBrutauthRule brutauthRule = container.instanceFor(rule);
-			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParameters());
+			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParametersValues());
 			RuleHandler handler = handlers.getHandler(brutauthRule);
 			if(!allowed){
 				handler.handle();
