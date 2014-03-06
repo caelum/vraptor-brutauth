@@ -4,6 +4,6 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 
 public interface MethodInvoker {
 
-	boolean invoke(CustomBrutauthRule toInvoke, Object[] args);
+	boolean invoke(CustomBrutauthRule toInvoke, Argument[] args);
 
 }

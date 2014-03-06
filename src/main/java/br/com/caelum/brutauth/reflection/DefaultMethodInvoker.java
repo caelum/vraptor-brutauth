@@ -9,7 +9,7 @@ public class DefaultMethodInvoker implements MethodInvoker {
 
 		@Inject private MethodSearchers searcher;
 
-		public boolean invoke(CustomBrutauthRule toInvoke, Object[] args) {
+		public boolean invoke(CustomBrutauthRule toInvoke, Argument[] args) {
 			return searcher.search(toInvoke, args).invoke();
 		}
 

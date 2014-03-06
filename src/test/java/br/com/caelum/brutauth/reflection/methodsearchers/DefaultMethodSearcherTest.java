@@ -3,13 +3,12 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Method;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.BrutauthValidation;
+import br.com.caelum.brutauth.reflection.NamedParametersMethod;
 
 public class DefaultMethodSearcherTest {
 
@@ -23,14 +22,14 @@ public class DefaultMethodSearcherTest {
 	
 	@Test
 	public void should_return_is_allowed_method() throws NoSuchMethodException {
-		Method method = methodSearcher.getMethod(new MyCustomRuleWithIsAllowedMethod());
-		assertEquals("isAllowed", method.getName());
+		NamedParametersMethod method = methodSearcher.getMethod(new MyCustomRuleWithIsAllowedMethod());
+		assertEquals("isAllowed", method.getMethod().getName());
 	}
 	
 	@Test
 	public void should_return_annotated_method() throws NoSuchMethodException {
-		Method method = methodSearcher.getMethod(new MyCustomRuleWithAnnotatedMethod());
-		assertTrue("should contains @" + BrutauthValidation.class.getSimpleName() + " annnotation", method.isAnnotationPresent(BrutauthValidation.class));
+		NamedParametersMethod method = methodSearcher.getMethod(new MyCustomRuleWithAnnotatedMethod());
+		assertTrue("should contains @" + BrutauthValidation.class.getSimpleName() + " annnotation", method.getMethod().isAnnotationPresent(BrutauthValidation.class));
 	}
 	
 	@Test(expected = NoSuchMethodException.class)

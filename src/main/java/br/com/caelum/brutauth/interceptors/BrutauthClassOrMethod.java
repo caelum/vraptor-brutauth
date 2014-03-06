@@ -1,6 +1,7 @@
 package br.com.caelum.brutauth.interceptors;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
 public class BrutauthClassOrMethod {

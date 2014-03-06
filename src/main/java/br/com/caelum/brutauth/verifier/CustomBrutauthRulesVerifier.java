@@ -8,15 +8,14 @@ import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 import br.com.caelum.brutauth.reflection.MethodInvoker;
-import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.ioc.Container;
 
 public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 
 	private final Container container;
-	private final MethodInfo methodInfo;
 	private final MethodInvoker invoker;
 	private final HandlerSearcher handlers;
+	private final MethodArguments arguments;
 
 	/**
 	 * @deprecated CDI eyes only
@@ -26,10 +25,10 @@ public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	}
 	
 	@Inject
-	public CustomBrutauthRulesVerifier(Container container, MethodInfo methodInfo,
+	public CustomBrutauthRulesVerifier(Container container, MethodArguments arguments,
 			MethodInvoker invoker, HandlerSearcher handlers) {
 				this.container = container;
-				this.methodInfo = methodInfo;
+				this.arguments = arguments;
 				this.invoker = invoker;
 				this.handlers = handlers;
 	}
@@ -49,7 +48,7 @@ public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	private boolean rulesAllows(Class<? extends CustomBrutauthRule>[] rules) {
 		for (Class<? extends CustomBrutauthRule> rule : rules) {
 			CustomBrutauthRule brutauthRule = container.instanceFor(rule);
-			boolean allowed = invoker.invoke(brutauthRule, methodInfo.getParametersValues());
+			boolean allowed = invoker.invoke(brutauthRule,  arguments.getValuedArguments());
 			RuleHandler handler = handlers.getHandler(brutauthRule);
 			if(!allowed){
 				handler.handle();
