@@ -44,11 +44,6 @@ public class AdaptedMethodSearcherTest {
 		assertMatchedMethod(method);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void should_not_allow_null_parameters() {
-		adaptedMethodSearcher.search(new AnimalsRule(), cat);
-	}
-	
 	@Test
 	public void should_match_methods_without_parameters() {
 		BrutauthMethod method = adaptedMethodSearcher.search(new NoneRule(), cat, cat);

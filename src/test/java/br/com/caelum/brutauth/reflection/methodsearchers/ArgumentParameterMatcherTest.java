@@ -32,7 +32,7 @@ public class ArgumentParameterMatcherTest {
 		assertEquals(new Object[] {tobbyArg.getValue(), billyArg.getValue()}, values);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void should_not_return_two_values_from_the_same_argument() throws NoSuchMethodException {
 		Parameter tobbyParam = new Parameter("tobby", Dog.class);
 		Parameter bobParam = new Parameter("bob", Dog.class);
@@ -41,7 +41,9 @@ public class ArgumentParameterMatcherTest {
 		Argument tobbyArg = new Argument("tobby", new Dog());
 		Argument[] arguments= new Argument[] {tobbyArg};
 		
-		argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
+		Object[] valuesMatchingParameters = argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
+		
+		assertEquals(new Object[] {tobbyArg.getValue(), null}, valuesMatchingParameters);
 	}
 
 }

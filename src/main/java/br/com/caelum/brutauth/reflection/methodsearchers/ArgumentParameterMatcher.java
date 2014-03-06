@@ -29,8 +29,7 @@ public class ArgumentParameterMatcher {
 				matchedParameters.tryToPut(param, arg);
 		}
 		MatchedArgument matchedArgument = matchedParameters.get(param);
-		if(matchedArgument == null)
-			throw new IllegalArgumentException("I didn't find any argument matching the parameter "+ param+ ". Arguments: "+args);
+		if(matchedArgument == null) return null;
 		return matchedArgument.getArgument().getValue();
 	}
 }
