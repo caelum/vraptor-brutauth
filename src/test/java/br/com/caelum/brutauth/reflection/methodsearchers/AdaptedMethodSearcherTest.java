@@ -19,7 +19,8 @@ public class AdaptedMethodSearcherTest {
 	
 	@Before
 	public void setUp(){
-		adaptedMethodSearcher = new AdaptedMethodSearcher(methodSearcher);
+		ArgumentParameterMatcher argumentParameterMatcher = new ArgumentParameterMatcher(new MatchedParameters());
+		adaptedMethodSearcher = new AdaptedMethodSearcher(methodSearcher, argumentParameterMatcher);
 		dog = argument("dog", new Dog());
 		cat = argument("cat", new Cat());
 	}
@@ -91,12 +92,6 @@ public class AdaptedMethodSearcherTest {
 		}
 	}
 	
-	private class Cat{
-	}
-	
-	private class Dog{
-	}
-
 
 
 }
