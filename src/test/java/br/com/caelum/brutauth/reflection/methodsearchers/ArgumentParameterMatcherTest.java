@@ -27,9 +27,9 @@ public class ArgumentParameterMatcherTest {
 				billyArg
 		};
 		
-		Object[] values = argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
+		Argument[] values = argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
 
-		assertEquals(new Object[] {tobbyArg.getValue(), billyArg.getValue()}, values);
+		assertEquals(new Argument[] {tobbyArg, billyArg}, values);
 	}
 	
 	@Test
@@ -41,9 +41,9 @@ public class ArgumentParameterMatcherTest {
 		Argument tobbyArg = new Argument("tobby", new Dog());
 		Argument[] arguments= new Argument[] {tobbyArg};
 		
-		Object[] valuesMatchingParameters = argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
+		Argument[] valuesMatchingParameters = argumentParameterMatcher.getValuesMatchingParameters(params, arguments);
 		
-		assertEquals(new Object[] {tobbyArg.getValue(), null}, valuesMatchingParameters);
+		assertEquals(new Argument[] {tobbyArg, null}, valuesMatchingParameters);
 	}
 
 }

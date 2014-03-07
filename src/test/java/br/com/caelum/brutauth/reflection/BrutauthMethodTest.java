@@ -14,22 +14,30 @@ public class BrutauthMethodTest {
 	@Test
 	public void should_not_throw_exception_if_method_is_defined() throws NoSuchMethodException, SecurityException {
 		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
-		Object[] arguments = fakeArgs(new RightFakeObject());
+		Argument[] arguments = fakeArgs(new RightFakeObject());
 		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
 		assertTrue(brutauthMethod.invoke());
 	}
 	
-	@Test(expected=NoSuchMethodException.class)
+	@Test
+	public void should_not_throw_exception_if_method_is_definedsdas() throws NoSuchMethodException, SecurityException {
+		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
+		Argument[] arguments = fakeArgs(null);
+		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
+		assertTrue(brutauthMethod.invoke());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
 	public void should_throw_exception_if_method_is_not_defined() throws NoSuchMethodException, SecurityException {
 		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
-		Object[] arguments = fakeArgs(new FalseFakeObject());
+		Argument[] arguments = fakeArgs(new FalseFakeObject());
 		new BrutauthMethod(arguments, realMethod, new RightFakeRule());
 	}
 	
 	@Test
 	public void should_invoke_method_with_varargs() throws NoSuchMethodException, SecurityException {
 		Method realMethod = RightFakeRule.class.getMethod("isAllowed", Object[].class);
-		Object[] arguments = fakeArgs(fakeArgs(new FalseFakeObject()));
+		Argument[] arguments = fakeArgs(fakeArgs(new FalseFakeObject()));
 		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
 		assertTrue(brutauthMethod.invoke());
 	}
@@ -40,9 +48,9 @@ public class BrutauthMethodTest {
 		BrutauthMethod brutauthMethod = new BrutauthMethod(null, realMethod, new FakeRuleWithoutArguments());
 		assertTrue(brutauthMethod.invoke());
 	}
-	
-	private Object[] fakeArgs(Object rule) {
-		return new Object[]{rule};
+
+	private Argument[] fakeArgs(Object rule) {
+		return new Argument[]{new Argument("name", rule)};
 	}
 
 	public class RightFakeRule implements CustomBrutauthRule{
@@ -70,5 +78,6 @@ public class BrutauthMethodTest {
 
 	public class FalseFakeObject implements CustomBrutauthRule{
 	}
+
 
 }

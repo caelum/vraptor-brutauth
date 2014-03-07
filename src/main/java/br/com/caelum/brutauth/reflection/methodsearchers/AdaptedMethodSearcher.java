@@ -4,8 +4,8 @@ import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.Argument;
-import br.com.caelum.brutauth.reflection.NamedParametersMethod;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
+import br.com.caelum.brutauth.reflection.NamedParametersMethod;
 import br.com.caelum.brutauth.reflection.Parameter;
 
 public class AdaptedMethodSearcher implements MethodSearcher {
@@ -32,8 +32,8 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 			NamedParametersMethod defaultMethod = defaultMethodSearcher.getMethod(ruleToSearch);
 			Parameter[] classes = defaultMethod.getParameters();
 			
-			Object[] argumentValues = matcher.getValuesMatchingParameters(classes, arguments);
-			return new BrutauthMethod(argumentValues, defaultMethod.getMethod(), ruleToSearch);
+			Argument[] matchedArguments = matcher.getValuesMatchingParameters(classes, arguments);
+			return new BrutauthMethod(matchedArguments, defaultMethod.getMethod(), ruleToSearch);
 		} catch (NoSuchMethodException e) {
 			return null;
 		}

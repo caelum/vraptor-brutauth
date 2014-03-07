@@ -14,22 +14,21 @@ public class ArgumentParameterMatcher {
 		this.matchedParameters = matchedParameters;
 	}
 	
-	public Object[] getValuesMatchingParameters(Parameter[] params, Argument[] args) throws NoSuchMethodException {
-		Object[] argsToUse = new Object[params.length];
+	public Argument[] getValuesMatchingParameters(Parameter[] params, Argument[] args) throws NoSuchMethodException {
+		Argument[] argsToUse = new Argument[params.length];
 		for (int i = 0; i < params.length; i++) {
-			Object parameter = searchForArgumentMatching(params[i], args);
-			argsToUse[i] = parameter;
+			argsToUse[i] = searchForArgumentMatching(params[i], args);
 		}
 		return argsToUse;
 	}
 
-	private Object searchForArgumentMatching(Parameter param, Argument[] args) {
+	private Argument searchForArgumentMatching(Parameter param, Argument[] args) {
 		for (Argument arg : args) {
 			if(arg != null && !matchedParameters.alreadyMatchedBy(arg)) 
 				matchedParameters.tryToPut(param, arg);
 		}
 		MatchedArgument matchedArgument = matchedParameters.get(param);
 		if(matchedArgument == null) return null;
-		return matchedArgument.getArgument().getValue();
+		return matchedArgument.getArgument();
 	}
 }
