@@ -1,5 +1,8 @@
 package br.com.caelum.brutauth.verifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.reflection.Argument;
@@ -17,13 +20,16 @@ public class MethodArguments {
 
 	public Argument[] getValuedArguments() {
 		ValuedParameter[] valuedParameters = info.getValuedParameters();
-		Argument[] valuedArguments = new Argument[valuedParameters.length];
+		List<Argument> valuedArguments = new ArrayList<Argument>();
 		for (int i = 0; i < valuedParameters.length; i++) {
 			ValuedParameter valuedParameter = valuedParameters[i];
-			
-			valuedArguments[i] = new Argument(valuedParameter.getName(), valuedParameter.getValue());
+			boolean validParameter = valuedParameter != null && valuedParameter.getValue() != null;
+			if(validParameter) {
+				Argument argument = new Argument(valuedParameter.getName(), valuedParameter.getValue());
+				valuedArguments.add(argument);
+			}
 		}
-		return valuedArguments;
+		return valuedArguments.toArray(new Argument[] {});
 		
 	}
 	
