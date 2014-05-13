@@ -7,11 +7,11 @@
 	<packaging>jar</packaging>
 	
 	<name>vraptor-brutauth</name>
-	<url>https://github.com/leonardowolter/vraptor-brutauth</url>
+	<url>https://github.com/caelum/vraptor-brutauth</url>
 	<scm>
-		<url>http://github.com/leonardowolter/vraptor-brutauth</url>
-		<connection>scm:git:git://github.com/leonardowolter/vraptor-brutauth</connection>
-		<developerConnection>scm:git:git@github.com:leonardowolter/vraptor-brutauth.git</developerConnection>
+		<url>http://github.com/caelum/vraptor-brutauth</url>
+		<connection>scm:git:git://github.com/caelum/vraptor-brutauth</connection>
+		<developerConnection>scm:git:git@github.com:caelum/vraptor-brutauth.git</developerConnection>
 	</scm>
 
 	<properties>
