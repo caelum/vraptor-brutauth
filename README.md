@@ -36,6 +36,14 @@ public class CanAccess implements SimpleBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccess() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccess(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -112,6 +120,14 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccessCar() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -131,6 +147,14 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccessCar() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -201,6 +225,14 @@ If you want the framework to redirect the user to the login form when a rule fai
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedHandler() {
+		this(null);
+	}
+
+	@Inject
 	public LoggedHandler(Result result) {
 		this.result = result;
 	}
@@ -220,6 +252,14 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedAccessRule() {
+		this(null);
+	}
+
+	@Inject
 	public LoggedAccessRule(UserSession userSession) {
 		this.userSession = userSession;
 	}

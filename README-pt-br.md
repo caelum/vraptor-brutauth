@@ -38,6 +38,14 @@ public class CanAccess implements SimpleBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccess() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccess(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -114,6 +122,14 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccess() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -133,6 +149,14 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccess() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccess(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -204,6 +228,14 @@ Por exemplo, se você quiser que quando determinada regra falhar o usuario seja 
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedHandler() {
+		this(null);
+	}
+
+	@Inject
 	public LoggedHandler(Result result) {
 		this.result = result;
 	}
@@ -224,7 +256,15 @@ public class LoggedAccessRule implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
-	public CanAccess(UserSession userSession) {
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedAccessRule() {
+		this(null);
+	}
+
+	@Inject
+	public LoggedAccessRule(UserSession userSession) {
 		this.userSession = userSession;
 	}
 
