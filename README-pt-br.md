@@ -12,7 +12,7 @@ Basta adicionar as seguintes linhas ao seu pom.xml:
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>1.0.0</version>
+	<version>4.0.0.Final</version> <!--or the latest version-->
 </dependency>
 ```
 
@@ -27,15 +27,13 @@ Regras simples são aquelas que autorizam o acesso a um recurso baseadas apenas 
 ####Como criar regras simples?
 
 
-Basta criar uma classe que implementa `SimpleBrutauthRule` e anotá-la com o `@Component` do VRaptor.
+Basta criar uma classe que implementa `SimpleBrutauthRule`.
 
 ex:
 
 ```
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class CanAccess implements SimpleBrutauthRule {
 
 	private UserSession userSession;
@@ -59,7 +57,7 @@ public class CanAccess implements SimpleBrutauthRule {
 Você precisará anotar a action de seu controller com o `@SimpleBrutauthRules` passando como argumento a classe de sua regra:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 
 	@SimpleBrutauthRules(CanAccess.class)
@@ -75,7 +73,7 @@ O resultado será parecido com:
 
 ```
 
-@Resource
+@Controller
 public class BrutauthController {
 
 	@SimpleBrutauthRules(CanAccess.class)
@@ -95,7 +93,7 @@ O Brutauth oferece também o recurso de regras customizadas. A diferença delas 
 Ou seja, se você tem uma action que recebe um objeto do tipo `Car`:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	public void showCar(Car car){
 		//logic
@@ -107,13 +105,11 @@ Você poderá receber o mesmo `Car` na sua regra.
 
 ####Como criar regras customizadas?
 
-Basta implementar `CustomBrutauthRule`. Sua classe também precisa ser anotada com `@Component`
+Basta implementar `CustomBrutauthRule`.
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
@@ -132,9 +128,7 @@ Por padrão, o nome do metodo deve ser `isAllowed` mas, se quiser usar outro nom
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
@@ -153,7 +147,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 E não se esqueça de anotar sua action com `@CustomBrutauthRules(CanAccessCar.class)`:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 
 	@CustomBrutauthRules(CanAccessCar.class)
@@ -168,7 +162,7 @@ public class BrutauthController {
 Para isso, você não precisa anotar cada método com a regra necessária. Basta anotar o controller:
 
 ```
-@Resource
+@Controller
 @SimpleBrutauthRules(CanAccess.class)
 public class BrutauthController {
 	public void somePage(){
@@ -185,7 +179,7 @@ Assim, ao tentar acessar qualquer método desse controller, a regra `CanAccess.c
 E isso também funciona com o `@CustomBrutauthRules`:
 
 ```
-@Resource
+@Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {
 	public void showCar(Car car){
@@ -207,7 +201,6 @@ você pode criar uma classe e implementar `RuleHandler`.
 Por exemplo, se você quiser que quando determinada regra falhar o usuario seja redirecionado para a página de login, você teria um `RuleHandler` parecido com esse:
 
 ```
-@Component
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
 
@@ -226,7 +219,6 @@ public class LoggedHandler implements RuleHandler{
 Agora você só precisa anotar a sua regra com `@HandledBy(LoggedHandler.class)`:
 
 ```
-@Component
 @HandledBy(LoggedHandler.class)
 public class LoggedAccessRule implements CustomBrutauthRule {
 
@@ -251,7 +243,7 @@ Você pode anotar a action com o mesmo `@HandledBy`. Isso sobrescreverá o `Rule
 Então, se você tem a action
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	@CustomBrutauthRules(LoggedAccessRule.class)
 	@HandledBy(OtherHandler.class)
@@ -268,7 +260,7 @@ O `RuleHandler` usado será o `OtherHandler`, mesmo se a sua regra `LoggedAccess
 Você pode passar um array de regras para as annotations `CustomBrutauthRules` e `SimpleBrutauthRules`:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	@CustomBrutauthRules({LoggedAccessRule.class, CanAccessCar.class})
 	public void showCar(Car car){
