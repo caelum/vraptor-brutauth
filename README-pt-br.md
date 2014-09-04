@@ -33,7 +33,9 @@ ex:
 
 ```
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CanAccess implements SimpleBrutauthRule {
 
 	private UserSession userSession;
@@ -80,7 +82,6 @@ Para passar o accessLevel necessário para sua regra, basta anotar a action com 
 O resultado será parecido com:
 
 ```
-
 @Controller
 public class BrutauthController {
 
@@ -117,7 +118,9 @@ Basta implementar `CustomBrutauthRule`.
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
@@ -144,7 +147,9 @@ Por padrão, o nome do metodo deve ser `isAllowed` mas, se quiser usar outro nom
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
@@ -225,6 +230,7 @@ você pode criar uma classe e implementar `RuleHandler`.
 Por exemplo, se você quiser que quando determinada regra falhar o usuario seja redirecionado para a página de login, você teria um `RuleHandler` parecido com esse:
 
 ```
+@RequestScoped
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
 
@@ -251,6 +257,7 @@ public class LoggedHandler implements RuleHandler{
 Agora você só precisa anotar a sua regra com `@HandledBy(LoggedHandler.class)`:
 
 ```
+@RequestScoped
 @HandledBy(LoggedHandler.class)
 public class LoggedAccessRule implements CustomBrutauthRule {
 
