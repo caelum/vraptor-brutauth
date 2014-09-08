@@ -128,7 +128,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	protected CanAccess() {
+	protected CanAccessCar() {
 		this(null);
 	}
 
@@ -157,7 +157,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	protected CanAccess() {
+	protected CanAccessCar() {
 		this(null);
 	}
 
