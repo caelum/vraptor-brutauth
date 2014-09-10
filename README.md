@@ -11,7 +11,7 @@ You can download vraptor-brutauth.jar from maven repository or configured in any
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>1.0.0</version>
+	<version>4.0.0.Final</version> <!--or the latest version-->
 </dependency>
 ```
 
@@ -25,19 +25,27 @@ Simple Rules are the ones that uses only an access level to authorize.
 
 ####How to create Simple Rules?
 
-You only need to create a class that implements `SimpleBrutauthRule` and annotate it with VRaptor's `@Component`.
+You only need to create a class that implements `SimpleBrutauthRule`.
 
 e.g.:
 
 ```
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
+import javax.enterprise.context.RequestScoped;
 
-@Component
+@RequestScoped
 public class CanAccess implements SimpleBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccess() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccess(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -56,7 +64,7 @@ public class CanAccess implements SimpleBrutauthRule {
 Annotate your action with `@SimpleBrutauthRules`, passing as argument your rule's class:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 
 	@SimpleBrutauthRules(CanAccess.class)
@@ -72,8 +80,7 @@ To define the necessary accessLevel to your rule, annotate the action with `@Acc
 The result will be like:
 
 ```
-
-@Resource
+@Controller
 public class BrutauthController {
 
 	@SimpleBrutauthRules(CanAccess.class)
@@ -93,7 +100,7 @@ e.g.
 Consider an action which recieves an argument of type `Car`:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	public void showCar(Car car){
 		//logic
@@ -105,17 +112,25 @@ You will be able to recieve the same `Car` in your `isAllowed` method.
 
 ####How to create custom rules?
 
-Just create a class that implements `CustomBrutauthRule`, with the VRaptor's `@Component` annotation.
+Just create a class that implements `CustomBrutauthRule`.
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
+import javax.enterprise.context.RequestScoped;
 
-@Component
+@RequestScoped
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccessCar() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -130,13 +145,21 @@ By default, the method name should be `isAllowed` but, if you want to, you can u
 
 ```
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.vraptor.ioc.Component;
+import javax.enterprise.context.RequestScoped;
 
-@Component
+@RequestScoped
 public class CanAccessCar implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected CanAccessCar() {
+		this(null);
+	}
+
+	@Inject
 	public CanAccessCar(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -150,7 +173,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 Don't forget to annotate your action with `@CustomBrutauthRules(CanAccessCar.class)`:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 
 	@CustomBrutauthRules(CanAccessCar.class)
@@ -165,7 +188,7 @@ public class BrutauthController {
 To do this, you do not need to annotate each method with the required rule. You just need to annotate the controller:
 
 ```
-@Resource
+@Controller
 @SimpleBrutauthRules(CanAccess.class)
 public class BrutauthController {
 	public void somePage(){
@@ -182,7 +205,7 @@ Doing this, to access anyone of the methods in that controller, the rule `CanAcc
 It also works with `@CustomBrutauthRules`:
 
 ```
-@Resource
+@Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {
 	public void showCar(Car car){
@@ -204,10 +227,18 @@ e.g.:
 If you want the framework to redirect the user to the login form when a rule fails. Your `RuleHandler` would be something like:
 
 ```
-@Component
+@RequestScoped
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedHandler() {
+		this(null);
+	}
+
+	@Inject
 	public LoggedHandler(Result result) {
 		this.result = result;
 	}
@@ -222,12 +253,20 @@ public class LoggedHandler implements RuleHandler{
 Now you just need to add the `@HandledBy(LoggedHandler.class)` annotation to your rule:
 
 ```
-@Component
+@RequestScoped
 @HandledBy(LoggedHandler.class)
 public class LoggedAccessRule implements CustomBrutauthRule {
 
 	private UserSession userSession;
 
+	/**
+	 * @deprecated CDI eyes only
+	 */
+	protected LoggedAccessRule() {
+		this(null);
+	}
+
+	@Inject
 	public LoggedAccessRule(UserSession userSession) {
 		this.userSession = userSession;
 	}
@@ -248,7 +287,7 @@ e.g.:
 Suppose the following action:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	@CustomBrutauthRules(LoggedAccessRule.class)
 	@HandledBy(OtherHandler.class)
@@ -264,7 +303,7 @@ The `RuleHandler` to be used will be the `OtherHandler`, even if your rule conta
 If you pass an array as argument to both `@CustomBrutauthRules` nor `@SimpleBrutauthRules`, all of then will be evaluated:
 
 ```
-@Resource
+@Controller
 public class BrutauthController {
 	@CustomBrutauthRules({LoggedAccessRule.class, CanAccessCar.class})
 	public void showCar(Car car){
