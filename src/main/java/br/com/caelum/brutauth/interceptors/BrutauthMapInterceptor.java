@@ -1,6 +1,7 @@
 package br.com.caelum.brutauth.interceptors;
 
-import java.util.List;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.brutauth.util.RulesMap;
@@ -14,16 +15,10 @@ import br.com.caelum.vraptor.interceptor.Interceptor;
 @Intercepts
 public class BrutauthMapInterceptor implements Interceptor {
 	
-	private List<BrutauthRule> rules;
-	private Result result;
-	private RulesMap mapaLegal;
+	@Inject private Instance<BrutauthRule> rules;
+	@Inject private Result result;
+	@Inject private RulesMap mapaLegal;
 
-	public BrutauthMapInterceptor(List<BrutauthRule> rules, Result result, RulesMap mapaLegal) {
-		this.rules = rules;
-		this.result = result;
-		this.mapaLegal = mapaLegal;
-	}
-	
 	@Override
 	public boolean accepts(ControllerMethod method) {
 		return true;
