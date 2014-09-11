@@ -7,11 +7,11 @@ VRaptor Brutauth provides an easy way to verify permission to access(authorizati
 
 You can download vraptor-brutauth.jar from maven repository or configured in any compatible tool: 
 
-```
+```xml
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>4.0.0.Final</version> <!--or the latest version-->
+	<version>4.0.1.Final</version> <!--or the latest version-->
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ You only need to create a class that implements `SimpleBrutauthRule`.
 
 e.g.:
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -63,7 +63,7 @@ public class CanAccess implements SimpleBrutauthRule {
 
 Annotate your action with `@SimpleBrutauthRules`, passing as argument your rule's class:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -79,7 +79,7 @@ To define the necessary accessLevel to your rule, annotate the action with `@Acc
 
 The result will be like:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -99,7 +99,7 @@ The VRaptor Brutauth also has the Custom Rules feature. The difference between t
 e.g.
 Consider an action which recieves an argument of type `Car`:
 
-```
+```java
 @Controller
 public class BrutauthController {
 	public void showCar(Car car){
@@ -114,7 +114,7 @@ You will be able to recieve the same `Car` in your `isAllowed` method.
 
 Just create a class that implements `CustomBrutauthRule`.
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -143,7 +143,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 By default, the method name should be `isAllowed` but, if you want to, you can use annother name annotating the method with `@BrutauthValidation`
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -172,7 +172,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 ```
 Don't forget to annotate your action with `@CustomBrutauthRules(CanAccessCar.class)`:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -187,7 +187,7 @@ public class BrutauthController {
 
 To do this, you do not need to annotate each method with the required rule. You just need to annotate the controller:
 
-```
+```java
 @Controller
 @SimpleBrutauthRules(CanAccess.class)
 public class BrutauthController {
@@ -204,7 +204,7 @@ Doing this, to access anyone of the methods in that controller, the rule `CanAcc
 
 It also works with `@CustomBrutauthRules`:
 
-```
+```java
 @Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {
@@ -226,7 +226,7 @@ e.g.:
 
 If you want the framework to redirect the user to the login form when a rule fails. Your `RuleHandler` would be something like:
 
-```
+```java
 @RequestScoped
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
@@ -252,7 +252,7 @@ public class LoggedHandler implements RuleHandler{
 ```
 Now you just need to add the `@HandledBy(LoggedHandler.class)` annotation to your rule:
 
-```
+```java
 @RequestScoped
 @HandledBy(LoggedHandler.class)
 public class LoggedAccessRule implements CustomBrutauthRule {
@@ -286,7 +286,7 @@ e.g.:
 
 Suppose the following action:
 
-```
+```java
 @Controller
 public class BrutauthController {
 	@CustomBrutauthRules(LoggedAccessRule.class)
@@ -302,7 +302,7 @@ The `RuleHandler` to be used will be the `OtherHandler`, even if your rule conta
 
 If you pass an array as argument to both `@CustomBrutauthRules` nor `@SimpleBrutauthRules`, all of then will be evaluated:
 
-```
+```java
 @Controller
 public class BrutauthController {
 	@CustomBrutauthRules({LoggedAccessRule.class, CanAccessCar.class})
@@ -320,11 +320,8 @@ unless you defined other handler at the action.
 
 If you are running in a servlet 3 container, you can verify if a rule is satisfied in the view, using the object `rules`. For example:
 
-```
+```jsp
 <c:if test="${rules[CanAccessCar].isAllowed(car)}">
 	<a href="brutauth/showCar">Show car</a>
 </c:if>
 ```
-
-
-
