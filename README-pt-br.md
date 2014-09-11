@@ -12,7 +12,7 @@ Basta adicionar as seguintes linhas ao seu pom.xml:
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>4.0.0.Final</version> <!--ou última versão-->
+	<version>4.0.1.Final</version> <!--ou última versão-->
 </dependency>
 ```
 
