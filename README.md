@@ -320,7 +320,7 @@ unless you defined other handler at the action.
 
 If you are running in a servlet 3 container, you can verify if a rule is satisfied in the view, using the object `rules`. For example:
 
-```html
+```jsp
 <c:if test="${rules[CanAccessCar].isAllowed(car)}">
 	<a href="brutauth/showCar">Show car</a>
 </c:if>

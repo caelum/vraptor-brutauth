@@ -322,7 +322,7 @@ Deste modo, todas as regras serão validadas da esquerda para a direita, até um
 
 Para verificar se uma regra é satisfeita na view, use o objeto `rules`. Por exemplo:
 
-```html
+```jsp
 <c:if test="${rules[CanAccessCar].isAllowed(car)}">
 	<a href="brutauth/showCar">Show car</a>
 </c:if>
