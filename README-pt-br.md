@@ -8,7 +8,7 @@ VRaptor Brutauth fornece um jeito fácil e prático de verificar permissões de 
 
 Basta adicionar as seguintes linhas ao seu pom.xml:
 
-```
+```xml
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
@@ -31,7 +31,7 @@ Basta criar uma classe que implementa `SimpleBrutauthRule`.
 
 ex:
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -66,7 +66,7 @@ public class CanAccess implements SimpleBrutauthRule {
 
 Você precisará anotar a action de seu controller com o `@SimpleBrutauthRules` passando como argumento a classe de sua regra:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -81,7 +81,7 @@ public class BrutauthController {
 Para passar o accessLevel necessário para sua regra, basta anotar a action com `@AccessLevel` com o valor necessário.
 O resultado será parecido com:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -101,7 +101,7 @@ O Brutauth oferece também o recurso de regras customizadas. A diferença delas 
 
 Ou seja, se você tem uma action que recebe um objeto do tipo `Car`:
 
-```
+```java
 @Controller
 public class BrutauthController {
 	public void showCar(Car car){
@@ -116,7 +116,7 @@ Você poderá receber o mesmo `Car` na sua regra.
 
 Basta implementar `CustomBrutauthRule`.
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -145,7 +145,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 Por padrão, o nome do metodo deve ser `isAllowed` mas, se quiser usar outro nome, você pode anotar o metodo com `@BrutauthValidation`:
 
-```
+```java
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import javax.enterprise.context.RequestScoped;
 
@@ -175,7 +175,7 @@ public class CanAccessCar implements CustomBrutauthRule {
 
 E não se esqueça de anotar sua action com `@CustomBrutauthRules(CanAccessCar.class)`:
 
-```
+```java
 @Controller
 public class BrutauthController {
 
@@ -190,7 +190,7 @@ public class BrutauthController {
 
 Para isso, você não precisa anotar cada método com a regra necessária. Basta anotar o controller:
 
-```
+```java
 @Controller
 @SimpleBrutauthRules(CanAccess.class)
 public class BrutauthController {
@@ -207,7 +207,7 @@ Assim, ao tentar acessar qualquer método desse controller, a regra `CanAccess.c
 
 E isso também funciona com o `@CustomBrutauthRules`:
 
-```
+```java
 @Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {
@@ -229,7 +229,7 @@ você pode criar uma classe e implementar `RuleHandler`.
 
 Por exemplo, se você quiser que quando determinada regra falhar o usuario seja redirecionado para a página de login, você teria um `RuleHandler` parecido com esse:
 
-```
+```java
 @RequestScoped
 public class LoggedHandler implements RuleHandler{
 	private final Result result;
@@ -256,7 +256,7 @@ public class LoggedHandler implements RuleHandler{
 
 Agora você só precisa anotar a sua regra com `@HandledBy(LoggedHandler.class)`:
 
-```
+```java
 @RequestScoped
 @HandledBy(LoggedHandler.class)
 public class LoggedAccessRule implements CustomBrutauthRule {
@@ -289,7 +289,7 @@ Você pode anotar a action com o mesmo `@HandledBy`. Isso sobrescreverá o `Rule
 
 Então, se você tem a action
 
-```
+```java
 @Controller
 public class BrutauthController {
 	@CustomBrutauthRules(LoggedAccessRule.class)
@@ -306,7 +306,7 @@ O `RuleHandler` usado será o `OtherHandler`, mesmo se a sua regra `LoggedAccess
 
 Você pode passar um array de regras para as annotations `CustomBrutauthRules` e `SimpleBrutauthRules`:
 
-```
+```java
 @Controller
 public class BrutauthController {
 	@CustomBrutauthRules({LoggedAccessRule.class, CanAccessCar.class})
@@ -322,7 +322,7 @@ Deste modo, todas as regras serão validadas da esquerda para a direita, até um
 
 Para verificar se uma regra é satisfeita na view, use o objeto `rules`. Por exemplo:
 
-```
+```html
 <c:if test="${rules[CanAccessCar].isAllowed(car)}">
 	<a href="brutauth/showCar">Show car</a>
 </c:if>
