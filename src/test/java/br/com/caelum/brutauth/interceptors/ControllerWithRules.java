@@ -3,7 +3,7 @@ package br.com.caelum.brutauth.interceptors;
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
-import br.com.caelum.brutauth.interceptors.CustomBrutauthRuleInterceptorTest.TrueCustomRule;
+import br.com.caelum.brutauth.interceptors.BrutauthRuleInterceptorTest.TrueCustomRule;
 
 
 @CustomBrutauthRules(MyCustomRule.class)

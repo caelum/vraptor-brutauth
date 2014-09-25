@@ -4,6 +4,7 @@ import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.util.TestUtils;
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 
 public class MyController {
@@ -29,6 +30,11 @@ public class MyController {
 
 	@CustomBrutauthRules({MyCustomRule.class, AnotherCustomRule.class})
 	public void myManyCustomRulesMethod(String myString) {}
+
+	@Get("/brutal")
+	public void myGetAnnotationMethod() {}
+	
+	public void myNonAnnotatedMethod() {}
 
 	public static ControllerMethod method(String method) {
 		return TestUtils.method(MyController.class, method);

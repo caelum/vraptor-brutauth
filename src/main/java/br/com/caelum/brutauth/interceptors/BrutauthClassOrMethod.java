@@ -1,8 +1,11 @@
 package br.com.caelum.brutauth.interceptors;
 
+import static java.util.Arrays.asList;
+
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrutauthClassOrMethod {
 	private final Annotation[] annotations;
@@ -28,6 +31,10 @@ public class BrutauthClassOrMethod {
 			if(currentAnnotation.annotationType().equals(annotation)) return (T) currentAnnotation;
 		}
 		throw new IllegalStateException("Cannot find annotation "+ annotation.getSimpleName()+ " at current class or method");
+	}
+
+	public List<Annotation> getAnnotations() {
+		return new ArrayList<>(asList(annotations));
 	}
 
 }

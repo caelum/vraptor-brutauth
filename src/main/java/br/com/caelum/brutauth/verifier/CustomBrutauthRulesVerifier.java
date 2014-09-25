@@ -1,61 +1,47 @@
 package br.com.caelum.brutauth.verifier;
 
+import java.lang.annotation.Annotation;
+
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
-import br.com.caelum.brutauth.auth.handlers.HandlerSearcher;
-import br.com.caelum.brutauth.auth.handlers.RuleHandler;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
-import br.com.caelum.brutauth.reflection.MethodInvoker;
-import br.com.caelum.vraptor.ioc.Container;
+
+/**
+ * Just get values of SimpleBrutauthRules annotation, this exists because we don't have polimorfism for annotations
+ * @author Leonardo Wolter
+ */
 
 public class CustomBrutauthRulesVerifier implements BrutauthRulesVerifier {
 
-	private final Container container;
-	private final MethodInvoker invoker;
-	private final HandlerSearcher handlers;
 	private final MethodArguments arguments;
+	private final GenericRulesVerifier genericVerifier;
 
 	/**
 	 * @deprecated CDI eyes only
 	 */
 	public CustomBrutauthRulesVerifier() {
-		this(null, null, null, null);
+		this(null, null);
 	}
 	
 	@Inject
-	public CustomBrutauthRulesVerifier(Container container, MethodArguments arguments,
-			MethodInvoker invoker, HandlerSearcher handlers) {
-				this.container = container;
-				this.arguments = arguments;
-				this.invoker = invoker;
-				this.handlers = handlers;
+	public CustomBrutauthRulesVerifier(MethodArguments arguments, GenericRulesVerifier genericVerifier) {
+		this.arguments = arguments;
+		this.genericVerifier = genericVerifier;
 	}
 	
 	@Override
-	public boolean rulesOfTypeAllows(BrutauthClassOrMethod type) {
-		boolean rulesAllows = true;
-		if (type.containsAnnotation(CustomBrutauthRules.class)) {
-			CustomBrutauthRules annotation = type.getAnnotation(CustomBrutauthRules.class);
-			Class<? extends CustomBrutauthRule>[] rules = annotation.value();
-			rulesAllows = rulesAllows(rules);
-		}
-		return rulesAllows;
-		
+	public boolean canVerify(Class<? extends Annotation> annotation) {
+		return CustomBrutauthRules.class.isAssignableFrom(annotation);
 	}
 
-	private boolean rulesAllows(Class<? extends CustomBrutauthRule>[] rules) {
-		for (Class<? extends CustomBrutauthRule> rule : rules) {
-			CustomBrutauthRule brutauthRule = container.instanceFor(rule);
-			boolean allowed = invoker.invoke(brutauthRule,  arguments.getValuedArguments());
-			RuleHandler handler = handlers.getHandler(brutauthRule);
-			if(!allowed){
-				handler.handle();
-				return false;
-			}
-		}
-		return true;
+	@Override
+	public boolean rulesOfTypeAllows(BrutauthClassOrMethod type) {
+		CustomBrutauthRules annotation = type.getAnnotation(CustomBrutauthRules.class);
+		Class<? extends CustomBrutauthRule>[] rules = annotation.value();
+		return genericVerifier.verify(rules, arguments.getValuedArguments());
 	}
+
 
 }

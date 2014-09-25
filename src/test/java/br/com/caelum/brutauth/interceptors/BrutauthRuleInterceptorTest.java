@@ -16,32 +16,32 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
-import br.com.caelum.brutauth.verifier.CustomBrutauthRulesVerifier;
+import br.com.caelum.brutauth.verifier.BrutauthRulesVerifiers;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.core.InterceptorStack;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomBrutauthRuleInterceptorTest {
+public class BrutauthRuleInterceptorTest {
 
 	@Mock
-	private CustomBrutauthRulesVerifier verifier;
+	private BrutauthRulesVerifiers verifiers;
 	@Mock
 	private InterceptorStack stack;
 	
 	private MyController controller;
-	private CustomBrutauthRuleInterceptor interceptor;
+	private BrutauthRuleInterceptor interceptor;
 	private ControllerMethod singleRuleControllerMethod;
 
 	@Before
 	public void setUp() throws Exception {
 		controller = new MyController();
 		singleRuleControllerMethod = method(MyController.class, "myCustomRuleMethod");
-		interceptor = new CustomBrutauthRuleInterceptor(verifier);
+		interceptor = new BrutauthRuleInterceptor(verifiers);
 	}
 	
 	@Test
 	public void should_stop_stack_if_rule_says_so() throws Exception {
-		when(verifier.rulesOfTypeAllows(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(false);
+		when(verifiers.verify(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(false);
 		
 		assertTrue("should accept myCustomRuleMethod", interceptor.accepts(singleRuleControllerMethod));
 		interceptor.intercept(stack, singleRuleControllerMethod, controller);
@@ -51,7 +51,7 @@ public class CustomBrutauthRuleInterceptorTest {
 	
 	@Test
 	public void should_continue_stack_if_rule_allows_access() throws Exception {
-		when(verifier.rulesOfTypeAllows(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
+		when(verifiers.verify(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
 
 		assertTrue("should accept myCustomRuleMethod", interceptor.accepts(singleRuleControllerMethod));
 		interceptor.intercept(stack, singleRuleControllerMethod, controller);
@@ -61,13 +61,13 @@ public class CustomBrutauthRuleInterceptorTest {
 
 	@Test
 	public void should_add_controllers_class_and_method_rules() throws Exception {
-		when(verifier.rulesOfTypeAllows(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
+		when(verifiers.verify(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
 		ControllerMethod controllerWithRulesMethod = method(ControllerWithRules.class, "methodWithRules");
 		
 		assertTrue("should accept ControllerWithRules", interceptor.accepts(controllerWithRulesMethod));
 		interceptor.intercept(stack, controllerWithRulesMethod, controller);
 		
-		verify(verifier, times(2)).rulesOfTypeAllows(any(BrutauthClassOrMethod.class));
+		verify(verifiers, times(2)).verify(any(BrutauthClassOrMethod.class));
 	}
 	
 	public class TrueCustomRule implements CustomBrutauthRule{
