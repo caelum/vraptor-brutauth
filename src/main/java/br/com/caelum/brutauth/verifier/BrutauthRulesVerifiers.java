@@ -6,8 +6,8 @@ import java.util.List;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import br.com.caelum.brutauth.auth.annotations.DefaultRule;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
+import br.com.caelum.brutauth.auth.rules.DefaultBrutauthRuleProducer;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 
 /**
@@ -19,14 +19,14 @@ import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 public class BrutauthRulesVerifiers {
 
 	private final Instance<BrutauthRulesVerifier> verifiers;
-	private final BrutauthRule defaultRule;
-	private SingleRuleVerifier singleVerifier;
+	private final SingleRuleVerifier singleVerifier;
+	private DefaultBrutauthRuleProducer defaultRuleProvider;
 
 	@Inject
-	public BrutauthRulesVerifiers(Instance<BrutauthRulesVerifier> verifiers, @DefaultRule BrutauthRule defaultRule,
+	public BrutauthRulesVerifiers(Instance<BrutauthRulesVerifier> verifiers, DefaultBrutauthRuleProducer defaultRuleProvider,
 			SingleRuleVerifier singleVerifier) {
 		this.verifiers = verifiers;
-		this.defaultRule = defaultRule;
+		this.defaultRuleProvider = defaultRuleProvider;
 		this.singleVerifier = singleVerifier;
 	}
 
@@ -39,18 +39,17 @@ public class BrutauthRulesVerifiers {
 	
 	public boolean verify(BrutauthClassOrMethod type) {
 		List<Annotation> annotations = type.getAnnotations();
-		boolean wasVerified = false;
-		boolean isAllowed = true;
 		for (BrutauthRulesVerifier verifier: verifiers) {
 			for (Annotation annotation : annotations) {
 				if(verifier.canVerify(annotation.annotationType())){
-					wasVerified = true;
-					isAllowed = verifier.rulesOfTypeAllows(type) && isAllowed;
+					if(!verifier.rulesOfTypeAllows(type)) return false;
 				}
 			}
 		}
-		if(!wasVerified) return singleVerifier.verify(defaultRule, null);
-		return isAllowed;
+		BrutauthRule defaultRule = defaultRuleProvider.getInstance();
+		boolean userDefinedDefaultRule = defaultRule != null;
+		if(userDefinedDefaultRule) return singleVerifier.verify(defaultRule, null);
+		return true;
 	}
 	
 }
