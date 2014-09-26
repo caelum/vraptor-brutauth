@@ -9,13 +9,10 @@ import br.com.caelum.brutauth.interceptors.BrutauthRuleInterceptorTest.TrueCusto
 
 @CustomBrutauthRules(MyCustomRule.class)
 @SimpleBrutauthRules(MySimpleBiggerThanZeroRule.class)
-@AccessLevel(ControllerWithRules.ACCESS_LEVEL)
-public class ControllerWithRules{
+@AccessLevel(PublicController.ACCESS_LEVEL)
+@Public
+public class PublicController{
 	public static final long ACCESS_LEVEL = 100;
-
-	@Public
-	public void publicMethod(){
-	}
 	
 	public void methodWithoutRules(){
 	}

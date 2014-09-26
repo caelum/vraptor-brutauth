@@ -1,6 +1,7 @@
 package br.com.caelum.brutauth.interceptors;
 
 import static br.com.caelum.brutauth.util.TestUtils.method;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
@@ -68,6 +69,22 @@ public class BrutauthRuleInterceptorTest {
 		interceptor.intercept(stack, controllerWithRulesMethod, controller);
 		
 		verify(verifiers, times(2)).verify(any(BrutauthClassOrMethod.class));
+	}
+	
+	@Test
+	public void should_ignore_public_controllers() throws Exception {
+		when(verifiers.verify(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
+		ControllerMethod controllerWithRulesMethod = method(PublicController.class, "methodWithRules");
+		
+		assertFalse("should not accept @Public controller", interceptor.accepts(controllerWithRulesMethod));
+	}
+	
+	@Test
+	public void should_ignore_public_method() throws Exception {
+		when(verifiers.verify(Mockito.any(BrutauthClassOrMethod.class))).thenReturn(true);
+		ControllerMethod controllerWithRulesMethod = method(ControllerWithRules.class, "publicMethod");
+		
+		assertFalse("should not accept @Public method", interceptor.accepts(controllerWithRulesMethod));
 	}
 	
 	public class TrueCustomRule implements CustomBrutauthRule{
