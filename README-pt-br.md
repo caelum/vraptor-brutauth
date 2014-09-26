@@ -229,7 +229,7 @@ Exemplo:
 
 ```java
 @RequestScoped @DefaultRule
-public class ShoudBeLoggedRule implements CustomBrutauthRule {
+public class ShouldBeLoggedRule implements CustomBrutauthRule {
 
 	@Inject	private UserSession userSession;
 
@@ -239,7 +239,31 @@ public class ShoudBeLoggedRule implements CustomBrutauthRule {
 }
 ```
 
-A `DefaultRule` vai ser usada em todos os métodos e controllers.
+A `DefaultRule` vai ser usada em todos os métodos e controllers que não estverem anotados com `@Public`
+
+###Como fazer com que um método ou controller seja público
+
+Se você precisa que um método ou controller ignore qualquer regra do sistema, 
+tudo que você precisa fazer é anotar ele com `@Public`.
+
+Exemplo: 
+
+```
+@Controller
+@CustomBrutauthRules(CanAccessCar.class)
+public class CarController {
+	@Public
+	public void showCar(Car car){
+		//logic
+	}
+
+	public void editCar(Car car){
+		//logic
+	}
+}
+```
+
+Nesse caso, o método `editCar` precisa que a regra `CanAccessCar` seja respeitada, o método `showCar` não precisa.
 
 ###Como alterar a ação a ser feita após verificar uma regra?
 

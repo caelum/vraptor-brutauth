@@ -223,6 +223,8 @@ public class CarController {
 You can create a `DefaultRule` in this case.
 Everything you need to do is to add the annotation `@DefaultRule` at your rule class.
 
+e.g.: 
+
 ```java
 @RequestScoped @DefaultRule
 public class ShoudBeLoggedRule implements CustomBrutauthRule {
@@ -234,7 +236,32 @@ public class ShoudBeLoggedRule implements CustomBrutauthRule {
 	}
 }
 ```
-The default rule will be applied to every method and controller.
+The default rule will be applied to every method and controller that isn't annotated with `@Public`.
+
+
+###How to make a method or controller public
+
+If you need a method or controller to ignore every rules of the system,
+ everything you need to do is to add the annotation `@Public` to it.
+
+e.g.: 
+
+```
+@Controller
+@CustomBrutauthRules(CanAccessCar.class)
+public class CarController {
+	@Public
+	public void showCar(Car car){
+		//logic
+	}
+
+	public void editCar(Car car){
+		//logic
+	}
+}
+```
+
+In that case, the method `editCar` needs the rule `CanAccessCar` to pass and `showCar` doesn't.
 
 
 ###How to customize the framework behaviour when isAllowed returns false?
