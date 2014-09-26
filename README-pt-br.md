@@ -248,7 +248,7 @@ tudo que você precisa fazer é anotar ele com `@Public`.
 
 Exemplo: 
 
-```
+```java
 @Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {

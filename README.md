@@ -246,7 +246,7 @@ If you need a method or controller to ignore every rules of the system,
 
 e.g.: 
 
-```
+```java
 @Controller
 @CustomBrutauthRules(CanAccessCar.class)
 public class CarController {
