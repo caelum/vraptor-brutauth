@@ -216,7 +216,26 @@ public class CarController {
 		//logic
 	}
 }
+``` 
+
+###What if I need to limit the entire system with a rule?
+
+You can create a `DefaultRule` in this case.
+Everything you need to do is to add the annotation `@DefaultRule` at your rule class.
+
+```java
+@RequestScoped @DefaultRule
+public class ShoudBeLoggedRule implements CustomBrutauthRule {
+
+	@Inject	private UserSession userSession;
+
+	public boolean isAllowed() {
+		return userSession.isLogged();
+	}
+}
 ```
+The default rule will be applied to every method and controller.
+
 
 ###How to customize the framework behaviour when isAllowed returns false?
 

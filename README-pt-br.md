@@ -221,6 +221,26 @@ public class CarController {
 }
 ```
 
+###E se eu precisar limitar o sistema inteiro com uma regra?
+Você pode criar uma `DefaultRule` nesse caso.
+Tudo que você precisa fazer é anotar sua classe com `@DefaultRule`.
+
+Exemplo:
+
+```java
+@RequestScoped @DefaultRule
+public class ShoudBeLoggedRule implements CustomBrutauthRule {
+
+	@Inject	private UserSession userSession;
+
+	public boolean isAllowed() {
+		return userSession.isLogged();
+	}
+}
+```
+
+A `DefaultRule` vai ser usada em todos os métodos e controllers.
+
 ###Como alterar a ação a ser feita após verificar uma regra?
 
 
