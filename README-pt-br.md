@@ -222,13 +222,13 @@ public class CarController {
 ```
 
 ###E se eu precisar limitar o sistema inteiro com uma regra?
-Você pode criar uma `DefaultRule` nesse caso.
-Tudo que você precisa fazer é anotar sua classe com `@DefaultRule`.
+Você pode criar uma `GlobalRule` nesse caso.
+Tudo que você precisa fazer é anotar sua classe com `@GlobalRule`.
 
 Exemplo:
 
 ```java
-@RequestScoped @DefaultRule
+@RequestScoped @GlobalRule
 public class ShouldBeLoggedRule implements CustomBrutauthRule {
 
 	@Inject	private UserSession userSession;
@@ -239,7 +239,7 @@ public class ShouldBeLoggedRule implements CustomBrutauthRule {
 }
 ```
 
-A `DefaultRule` vai ser usada em todos os métodos e controllers que não estverem anotados com `@Public`
+A `GlobalRule` vai ser usada em todos os métodos e controllers que não estverem anotados com `@Public`
 
 ###Como fazer com que um método ou controller seja público
 

@@ -7,26 +7,26 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
-import br.com.caelum.brutauth.auth.rules.DefaultBrutauthRuleProducer;
+import br.com.caelum.brutauth.auth.rules.GlobalRuleProducer;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 
 /**
  * Verify every brutauth annotations for a BrutauthClassOrMethod.
  * This is called two times for each request: One for the controller class and other for the controller method.
- * If no annotations of BrutauthClassOrMethod can be verified, the rule annotated with @DefaultRule will be used.
+ * If present, the rule annotated with @GlobalRule will be used at both controller class and methods.
  * @author Leonardo Wolter
  */
 public class BrutauthRulesVerifiers {
 
 	private final Instance<BrutauthRulesVerifier> verifiers;
 	private final SingleRuleVerifier singleVerifier;
-	private DefaultBrutauthRuleProducer defaultRuleProvider;
+	private GlobalRuleProducer defaultRuleProvider;
 
 	@Inject
-	public BrutauthRulesVerifiers(Instance<BrutauthRulesVerifier> verifiers, DefaultBrutauthRuleProducer defaultRuleProvider,
+	public BrutauthRulesVerifiers(Instance<BrutauthRulesVerifier> verifiers, GlobalRuleProducer globalRuleProvider,
 			SingleRuleVerifier singleVerifier) {
 		this.verifiers = verifiers;
-		this.defaultRuleProvider = defaultRuleProvider;
+		this.defaultRuleProvider = globalRuleProvider;
 		this.singleVerifier = singleVerifier;
 	}
 
@@ -46,9 +46,9 @@ public class BrutauthRulesVerifiers {
 				}
 			}
 		}
-		BrutauthRule defaultRule = defaultRuleProvider.getInstance();
-		boolean userDefinedDefaultRule = defaultRule != null;
-		if(userDefinedDefaultRule) return singleVerifier.verify(defaultRule, null);
+		BrutauthRule globalRule = defaultRuleProvider.getInstance();
+		boolean userDefinedGlobalRule = globalRule != null;
+		if(userDefinedGlobalRule) return singleVerifier.verify(globalRule, null);
 		return true;
 	}
 	

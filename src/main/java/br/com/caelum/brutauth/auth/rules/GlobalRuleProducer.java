@@ -7,13 +7,13 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.util.AnnotationLiteral;
 
-import br.com.caelum.brutauth.auth.annotations.DefaultRule;
+import br.com.caelum.brutauth.auth.annotations.GlobalRule;
 
 @ApplicationScoped
-public class DefaultBrutauthRuleProducer{
+public class GlobalRuleProducer{
 
 	public BrutauthRule getInstance(){
-		Instance<Object> select = CDI.current().select(new AnnotationLiteral<DefaultRule>() {});
+		Instance<Object> select = CDI.current().select(new AnnotationLiteral<GlobalRule>() {});
 		Iterator<Object> iterator = select.iterator();
 		return iterator.hasNext() ? (BrutauthRule) iterator.next() : null;
 	}

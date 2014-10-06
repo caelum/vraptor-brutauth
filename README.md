@@ -220,13 +220,13 @@ public class CarController {
 
 ###What if I need to limit the entire system with a rule?
 
-You can create a `DefaultRule` in this case.
-Everything you need to do is to add the annotation `@DefaultRule` at your rule class.
+You can create a `GlobalRule` in this case.
+Everything you need to do is to add the annotation `@GlobalRule` at your rule class.
 
 e.g.: 
 
 ```java
-@RequestScoped @DefaultRule
+@RequestScoped @GlobalRule
 public class ShoudBeLoggedRule implements CustomBrutauthRule {
 
 	@Inject	private UserSession userSession;

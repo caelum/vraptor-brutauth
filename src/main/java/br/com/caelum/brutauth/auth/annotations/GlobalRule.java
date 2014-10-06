@@ -8,6 +8,6 @@ import javax.inject.Qualifier;
 
 @Retention(RUNTIME)
 @Qualifier
-public @interface DefaultRule {
+public @interface GlobalRule {
 
 }

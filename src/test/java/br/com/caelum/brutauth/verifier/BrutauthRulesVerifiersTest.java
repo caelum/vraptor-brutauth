@@ -21,13 +21,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
-import br.com.caelum.brutauth.auth.rules.DefaultBrutauthRuleProducer;
+import br.com.caelum.brutauth.auth.rules.GlobalRuleProducer;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BrutauthRulesVerifiersTest {
 	@Mock private Instance<BrutauthRulesVerifier> verifiersInstances;
-	@Mock private DefaultBrutauthRuleProducer defaultRuleProducer;
+	@Mock private GlobalRuleProducer defaultRuleProducer;
 	@Mock private BrutauthRule defaultRule;
 	@Mock private SingleRuleVerifier singleVerifier;
 	@Mock private BrutauthRulesVerifier verifier;
