@@ -11,10 +11,6 @@ public class NamedParametersMethod {
 	}
 
     public Parameter[] getParameters() {
-        /*Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
-        String[] lookupParameterNames = paranamer.lookupParameterNames(method, true);
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        return namedParametersFor(lookupParameterNames, parameterTypes);*/
 
         java.lang.reflect.Parameter[] params = method.getParameters();
         Class<?>[] parametersType = method.getParameterTypes();
