@@ -1,35 +1,31 @@
 package br.com.caelum.brutauth.reflection;
 
-import java.lang.reflect.Method;
+import br.com.caelum.vraptor.http.ParameterNameProvider;
 
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import javax.inject.Inject;
+import java.lang.reflect.Method;
 
 public class NamedParametersMethod {
 
-	private Method method;
+    @Inject
+    private ParameterNameProvider parameterNameProvider;
+    private Method method;
 
 	public NamedParametersMethod(Method method) {
 		this.method = method;
 	}
 
 	public Parameter[] getParameters() {
-        Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
-        String[] lookupParameterNames = paranamer.lookupParameterNames(method, true);
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        return namedParametersFor(lookupParameterNames, parameterTypes);
-        
-	}
-
-	private Parameter[] namedParametersFor(String[] parameterNames,
-			Class<?>[] parameterTypes) {
-		Parameter[] namedParameters = new Parameter[parameterTypes.length];
-		for (int i = 0; i < parameterTypes.length; i++) {
-			namedParameters[i] = new Parameter(parameterNames[i], parameterTypes[i]);
-		}
-		return namedParameters;
-	}
+        br.com.caelum.vraptor.http.Parameter[] parametersVRaptor = parameterNameProvider.parametersFor(method);
+        if (parametersVRaptor != null) {
+            Parameter[] parameters = new Parameter[parametersVRaptor.length];
+            for (int i=0; i<parametersVRaptor.length; i++) {
+                parameters[i] = new Parameter(parametersVRaptor[i].getName(),parametersVRaptor[i].getType());
+            }
+            return parameters;
+        }
+        return null;
+    }
 
 	public Method getMethod() {
 		return method;
