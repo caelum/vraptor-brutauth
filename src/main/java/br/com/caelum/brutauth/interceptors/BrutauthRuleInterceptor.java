@@ -2,7 +2,6 @@ package br.com.caelum.brutauth.interceptors;
 
 import javax.inject.Inject;
 
-import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
 import br.com.caelum.brutauth.auth.annotations.Public;
 import br.com.caelum.brutauth.verifier.BrutauthRulesVerifiers;
 import br.com.caelum.vraptor.InterceptionException;
