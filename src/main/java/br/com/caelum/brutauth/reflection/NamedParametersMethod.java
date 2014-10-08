@@ -1,36 +1,40 @@
 package br.com.caelum.brutauth.reflection;
 
-import br.com.caelum.vraptor.http.ParameterNameProvider;
-
-import javax.inject.Inject;
 import java.lang.reflect.Method;
 
 public class NamedParametersMethod {
 
-    @Inject
-    private ParameterNameProvider parameterNameProvider;
     private Method method;
 
 	public NamedParametersMethod(Method method) {
 		this.method = method;
 	}
 
-	public Parameter[] getParameters() {
-        br.com.caelum.vraptor.http.Parameter[] parametersVRaptor = parameterNameProvider.parametersFor(method);
-        if (parametersVRaptor != null) {
-            Parameter[] parameters = new Parameter[parametersVRaptor.length];
-            for (int i=0; i<parametersVRaptor.length; i++) {
-                parameters[i] = new Parameter(parametersVRaptor[i].getName(),parametersVRaptor[i].getType());
-            }
-            return parameters;
+    public Parameter[] getParameters() {
+        /*Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
+        String[] lookupParameterNames = paranamer.lookupParameterNames(method, true);
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        return namedParametersFor(lookupParameterNames, parameterTypes);*/
+
+        java.lang.reflect.Parameter[] params = method.getParameters();
+        Class<?>[] parametersType = method.getParameterTypes();
+        String[] parametersName = new String[params.length];
+        for (int i = 0; i < params.length; i++) {
+           parametersName[i] =  params[i].getName();
         }
-        return null;
+        return namedParametersFor(parametersName,parametersType);
     }
 
-	public Method getMethod() {
-		return method;
-	}
-	
-	
+    private Parameter[] namedParametersFor(String[] parameterNames,
+                                           Class<?>[] parameterTypes) {
+        Parameter[] namedParameters = new Parameter[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            namedParameters[i] = new Parameter(parameterNames[i], parameterTypes[i]);
+        }
+        return namedParameters;
+    }
 
+    public Method getMethod() {
+        return method;
+    }
 }
