@@ -30,9 +30,9 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 	public BrutauthMethod search(CustomBrutauthRule ruleToSearch, Argument...arguments) {
 		try {
 			NamedParametersMethod defaultMethod = defaultMethodSearcher.getMethod(ruleToSearch);
-			Parameter[] classes = defaultMethod.getParameters();
+			Parameter[] parameters = defaultMethod.getParameters();
 
-			Argument[] matchedArguments = matcher.getValuesMatchingParameters(classes, arguments);
+			Argument[] matchedArguments = matcher.getValuesMatchingParameters(parameters, arguments);
 			return new BrutauthMethod(matchedArguments, defaultMethod.getMethod(), ruleToSearch);
 		} catch (NoSuchMethodException e) {
 			return null;

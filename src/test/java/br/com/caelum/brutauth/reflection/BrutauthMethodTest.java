@@ -11,34 +11,43 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 
 public class BrutauthMethodTest {
 
+	
+	@Test
+	public void should_find_method_with_two_arguments() throws NoSuchMethodException, SecurityException {
+		Method realMethod = FakeRuleWithTwoArguments.class.getMethod("isAllowed", RightFakeObject.class, OtherRightFakeObject.class);
+		Argument[] arguments = fakeArgs(new RightFakeObject(), new OtherRightFakeObject());
+		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new FakeRuleWithTwoArguments());
+		assertTrue(brutauthMethod.invoke());
+	}
 	@Test
 	public void should_not_throw_exception_if_method_is_defined() throws NoSuchMethodException, SecurityException {
-		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
+		Method realMethod = FakeRule.class.getMethod("isAllowed", RightFakeObject.class);
 		Argument[] arguments = fakeArgs(new RightFakeObject());
-		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
+		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new FakeRule());
 		assertTrue(brutauthMethod.invoke());
 	}
 	
 	@Test
 	public void should_not_throw_exception_if_method_is_definedsdas() throws NoSuchMethodException, SecurityException {
-		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
+		Method realMethod = FakeRule.class.getMethod("isAllowed", RightFakeObject.class);
 		Argument[] arguments = fakeArgs(null);
-		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
+		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new FakeRule());
 		assertTrue(brutauthMethod.invoke());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void should_throw_exception_if_method_is_not_defined() throws NoSuchMethodException, SecurityException {
-		Method realMethod = RightFakeRule.class.getMethod("isAllowed", RightFakeObject.class);
+		Method realMethod = FakeRule.class.getMethod("isAllowed", RightFakeObject.class);
 		Argument[] arguments = fakeArgs(new FalseFakeObject());
-		new BrutauthMethod(arguments, realMethod, new RightFakeRule());
+		new BrutauthMethod(arguments, realMethod, new FakeRule());
 	}
 	
 	@Test
 	public void should_invoke_method_with_varargs() throws NoSuchMethodException, SecurityException {
-		Method realMethod = RightFakeRule.class.getMethod("isAllowed", Object[].class);
-		Argument[] arguments = fakeArgs(fakeArgs(new FalseFakeObject()));
-		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new RightFakeRule());
+		Method realMethod = FakeRuleWithVarargs.class.getMethod("isAllowed", Object[].class);
+		Object[] varargs = new Object[]{new Object[]{new FalseFakeObject()}};
+		Argument[] arguments = fakeArgs(varargs);
+		BrutauthMethod brutauthMethod = new BrutauthMethod(arguments, realMethod, new FakeRuleWithVarargs());
 		assertTrue(brutauthMethod.invoke());
 	}
 	
@@ -49,16 +58,31 @@ public class BrutauthMethodTest {
 		assertTrue(brutauthMethod.invoke());
 	}
 
-	private Argument[] fakeArgs(Object rule) {
-		return new Argument[]{new Argument("name", rule)};
+	private Argument[] fakeArgs(Object... rules) {
+		if(rules == null){
+			return new Argument[]{null};
+		}
+		Argument[] arguments = new Argument[rules.length];
+		for (int i = 0; i < rules.length; i++) {
+			arguments[i] = new Argument("name"+i, rules[i]);
+		}
+		return arguments;
 	}
 
-	public class RightFakeRule implements CustomBrutauthRule{
+	public class FakeRule implements CustomBrutauthRule{
 		public boolean isAllowed(RightFakeObject fake){
 			return true;
 		}
-
+	}
+	
+	public class FakeRuleWithVarargs implements CustomBrutauthRule{
 		public boolean isAllowed(Object...args){
+			return true;
+		}
+	}
+	
+	public class FakeRuleWithTwoArguments implements CustomBrutauthRule{
+		public boolean isAllowed(RightFakeObject fake, OtherRightFakeObject fake2){
 			return true;
 		}
 	}
@@ -73,11 +97,11 @@ public class BrutauthMethodTest {
 		}
 	}
 	
-	public class RightFakeObject implements CustomBrutauthRule{
-	}
+	public class RightFakeObject{}
 
-	public class FalseFakeObject implements CustomBrutauthRule{
-	}
+	public class OtherRightFakeObject{}
+
+	public class FalseFakeObject{}
 
 
 }

@@ -2,11 +2,11 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 
 import static org.junit.Assert.assertEquals;
 
-import br.com.caelum.brutauth.reflection.ParameterMock;
-import br.com.caelum.vraptor.http.Parameter;
 import org.junit.Test;
 
 import br.com.caelum.brutauth.reflection.Argument;
+import br.com.caelum.brutauth.reflection.ParameterMock;
+import br.com.caelum.vraptor.http.Parameter;
 
 public class ArgumentParameterMatcherTest {
 	private final ArgumentParameterMatcher argumentParameterMatcher = new ArgumentParameterMatcher(new MatchedParameters());
@@ -46,5 +46,5 @@ public class ArgumentParameterMatcherTest {
 		
 		assertEquals(new Argument[] {tobbyArg, null}, valuesMatchingParameters);
 	}
-
+	
 }
