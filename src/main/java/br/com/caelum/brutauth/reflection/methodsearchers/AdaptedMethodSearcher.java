@@ -6,7 +6,7 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
 import br.com.caelum.brutauth.reflection.NamedParametersMethod;
-import br.com.caelum.brutauth.reflection.Parameter;
+import br.com.caelum.vraptor.http.Parameter;
 
 public class AdaptedMethodSearcher implements MethodSearcher {
 

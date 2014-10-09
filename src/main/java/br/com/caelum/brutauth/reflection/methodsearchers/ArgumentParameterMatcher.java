@@ -3,7 +3,8 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.reflection.Argument;
-import br.com.caelum.brutauth.reflection.Parameter;
+import br.com.caelum.vraptor.http.Parameter;
+
 
 public class ArgumentParameterMatcher {
 	

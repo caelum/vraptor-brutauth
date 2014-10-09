@@ -1,33 +1,24 @@
 package br.com.caelum.brutauth.reflection;
 
+import br.com.caelum.vraptor.http.Parameter;
+import br.com.caelum.vraptor.http.ParameterNameProvider;
+
 import java.lang.reflect.Method;
 
 public class NamedParametersMethod {
 
+    private ParameterNameProvider parameterNameProvider;
+
     private Method method;
 
-	public NamedParametersMethod(Method method) {
+	public NamedParametersMethod(Method method, ParameterNameProvider parameterNameProvider) {
 		this.method = method;
+        this.parameterNameProvider = parameterNameProvider;
 	}
 
     public Parameter[] getParameters() {
 
-        java.lang.reflect.Parameter[] params = method.getParameters();
-        Class<?>[] parametersType = method.getParameterTypes();
-        String[] parametersName = new String[params.length];
-        for (int i = 0; i < params.length; i++) {
-           parametersName[i] =  params[i].getName();
-        }
-        return namedParametersFor(parametersName,parametersType);
-    }
-
-    private Parameter[] namedParametersFor(String[] parameterNames,
-                                           Class<?>[] parameterTypes) {
-        Parameter[] namedParameters = new Parameter[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
-            namedParameters[i] = new Parameter(parameterNames[i], parameterTypes[i]);
-        }
-        return namedParameters;
+        return parameterNameProvider.parametersFor(method);
     }
 
     public Method getMethod() {
