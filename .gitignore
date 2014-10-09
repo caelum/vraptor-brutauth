@@ -8,4 +8,7 @@
 *.war
 *.ear
 
+vraptor-brutauth.iml
+
 target/
+.idea/

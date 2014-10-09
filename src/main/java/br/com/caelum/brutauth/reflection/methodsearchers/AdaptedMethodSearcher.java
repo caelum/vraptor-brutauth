@@ -6,7 +6,7 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
 import br.com.caelum.brutauth.reflection.NamedParametersMethod;
-import br.com.caelum.brutauth.reflection.Parameter;
+import br.com.caelum.vraptor.http.Parameter;
 
 public class AdaptedMethodSearcher implements MethodSearcher {
 
@@ -31,7 +31,7 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 		try {
 			NamedParametersMethod defaultMethod = defaultMethodSearcher.getMethod(ruleToSearch);
 			Parameter[] classes = defaultMethod.getParameters();
-			
+
 			Argument[] matchedArguments = matcher.getValuesMatchingParameters(classes, arguments);
 			return new BrutauthMethod(matchedArguments, defaultMethod.getMethod(), ruleToSearch);
 		} catch (NoSuchMethodException e) {

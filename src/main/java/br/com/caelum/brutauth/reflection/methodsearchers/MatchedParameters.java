@@ -5,7 +5,8 @@ import java.util.Map;
 
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.MatchLevel;
-import br.com.caelum.brutauth.reflection.Parameter;
+import br.com.caelum.vraptor.http.Parameter;
+
 
 public class MatchedParameters {
 	private final Map<Parameter, MatchedArgument> matches = new HashMap<>();

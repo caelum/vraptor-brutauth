@@ -1,6 +1,8 @@
 package br.com.caelum.brutauth.reflection;
 
 
+import br.com.caelum.vraptor.http.Parameter;
+
 public class Argument {
 
 	private String name;

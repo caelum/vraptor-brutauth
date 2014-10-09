@@ -1,40 +1,27 @@
 package br.com.caelum.brutauth.reflection;
 
-import java.lang.reflect.Method;
+import br.com.caelum.vraptor.http.Parameter;
+import br.com.caelum.vraptor.http.ParameterNameProvider;
 
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import java.lang.reflect.Method;
 
 public class NamedParametersMethod {
 
-	private Method method;
+    private ParameterNameProvider parameterNameProvider;
 
-	public NamedParametersMethod(Method method) {
+    private Method method;
+
+	public NamedParametersMethod(Method method, ParameterNameProvider parameterNameProvider) {
 		this.method = method;
+        this.parameterNameProvider = parameterNameProvider;
 	}
 
-	public Parameter[] getParameters() {
-        Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
-        String[] lookupParameterNames = paranamer.lookupParameterNames(method, true);
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        return namedParametersFor(lookupParameterNames, parameterTypes);
-        
-	}
+    public Parameter[] getParameters() {
 
-	private Parameter[] namedParametersFor(String[] parameterNames,
-			Class<?>[] parameterTypes) {
-		Parameter[] namedParameters = new Parameter[parameterTypes.length];
-		for (int i = 0; i < parameterTypes.length; i++) {
-			namedParameters[i] = new Parameter(parameterNames[i], parameterTypes[i]);
-		}
-		return namedParameters;
-	}
+        return parameterNameProvider.parametersFor(method);
+    }
 
-	public Method getMethod() {
-		return method;
-	}
-	
-	
-
+    public Method getMethod() {
+        return method;
+    }
 }
