@@ -21,7 +21,7 @@ public class SimpleBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	public SimpleBrutauthRulesVerifier() {
+	protected SimpleBrutauthRulesVerifier() {
 		this(null);
 	}
 	

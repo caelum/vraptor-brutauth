@@ -14,8 +14,12 @@ public class HandlerSearcher {
 	private Container container;
 	private ControllerMethod controllerMethod;
 
-	@Deprecated // CDI eyes only
-	public HandlerSearcher() {}
+	/**
+	 * @deprecated CDI eyes only.
+	 */
+	protected HandlerSearcher() {
+		this(null, null);
+	}
 
 	@Inject
 	public HandlerSearcher(Container container, ControllerMethod controllerMethod) {

@@ -13,7 +13,7 @@ public class AccessNotAllowedHandler implements RuleHandler {
 	/**
 	 * @deprecated CDI eyes only
 	*/
-	public AccessNotAllowedHandler() {
+	protected AccessNotAllowedHandler() {
 		this(null);
 	}
 	

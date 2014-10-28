@@ -16,7 +16,7 @@ public class AdaptedMethodSearcher implements MethodSearcher {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	public AdaptedMethodSearcher() {
+	protected AdaptedMethodSearcher() {
 		this(null, null);
 	}
 	

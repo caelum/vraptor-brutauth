@@ -18,7 +18,7 @@ public class BrutauthRuleInterceptor implements Interceptor {
 	/**
 	 * @deprecated CDI eyes only
 	 */
-	public BrutauthRuleInterceptor() {
+	protected BrutauthRuleInterceptor() {
 	}
 	
 	@Inject 
