@@ -1,8 +1,11 @@
 package br.com.caelum.brutauth.reflection;
 
 
+import javax.enterprise.inject.Vetoed;
+
 import br.com.caelum.vraptor.http.Parameter;
 
+@Vetoed
 public class Argument {
 
 	private String name;

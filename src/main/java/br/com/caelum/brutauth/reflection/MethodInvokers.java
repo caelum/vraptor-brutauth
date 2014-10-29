@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.reflection;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -10,6 +11,7 @@ import br.com.caelum.brutauth.auth.rules.BrutauthRule;
  * @author Leonardo Wolter
  *
  */
+@Dependent
 public class MethodInvokers {
 
 	private Instance<MethodInvoker> invokers;

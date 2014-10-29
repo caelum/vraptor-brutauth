@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.auth.handlers;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.HandledBy;
@@ -9,17 +10,11 @@ import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.ioc.Container;
 import br.com.caelum.vraptor.proxy.CDIProxies;
 
+@Dependent
 public class HandlerSearcher {
 
 	private Container container;
 	private ControllerMethod controllerMethod;
-
-	/**
-	 * @deprecated CDI eyes only.
-	 */
-	protected HandlerSearcher() {
-		this(null, null);
-	}
 
 	@Inject
 	public HandlerSearcher(Container container, ControllerMethod controllerMethod) {

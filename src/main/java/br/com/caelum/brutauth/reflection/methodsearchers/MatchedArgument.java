@@ -1,8 +1,11 @@
 package br.com.caelum.brutauth.reflection.methodsearchers;
 
+import javax.enterprise.inject.Vetoed;
+
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.MatchLevel;
 
+@Vetoed
 public class MatchedArgument {
 
 	private Argument arg;

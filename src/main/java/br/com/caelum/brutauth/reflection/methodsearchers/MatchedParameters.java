@@ -3,11 +3,13 @@ package br.com.caelum.brutauth.reflection.methodsearchers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.enterprise.context.Dependent;
+
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.MatchLevel;
 import br.com.caelum.vraptor.http.Parameter;
 
-
+@Dependent
 public class MatchedParameters {
 	private final Map<Parameter, MatchedArgument> matches = new HashMap<>();
 

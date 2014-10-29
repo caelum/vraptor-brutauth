@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.reflection.methodsearchers;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.brutauth.reflection.BrutauthMethod;
 
+@Dependent
 public class MethodSearchers {
 
 	@Inject @Any private Instance<MethodSearcher> searchers;

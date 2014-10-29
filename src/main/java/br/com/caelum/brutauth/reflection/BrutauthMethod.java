@@ -4,12 +4,15 @@ import static java.util.Arrays.asList;
 
 import java.lang.reflect.Method;
 
+import javax.enterprise.inject.Vetoed;
+
 import net.vidageek.mirror.dsl.ClassController;
 import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.Matcher;
 import net.vidageek.mirror.list.dsl.MirrorList;
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 
+@Vetoed
 public class BrutauthMethod {
 
 	private final Method methodToInvoke;

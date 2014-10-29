@@ -3,12 +3,14 @@ package br.com.caelum.brutauth.verifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.vraptor.core.MethodInfo;
 import br.com.caelum.vraptor.http.ValuedParameter;
 
+@Dependent
 public class MethodArguments {
 	
 	private MethodInfo info;

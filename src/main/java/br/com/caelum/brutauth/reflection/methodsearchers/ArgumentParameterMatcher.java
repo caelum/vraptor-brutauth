@@ -1,11 +1,12 @@
 package br.com.caelum.brutauth.reflection.methodsearchers;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.reflection.Argument;
 import br.com.caelum.vraptor.http.Parameter;
 
-
+@Dependent
 public class ArgumentParameterMatcher {
 	
 	private MatchedParameters matchedParameters;

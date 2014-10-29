@@ -5,9 +5,12 @@ import br.com.caelum.brutauth.reflection.BrutauthValidation;
 import br.com.caelum.brutauth.reflection.NamedParametersMethod;
 import br.com.caelum.vraptor.http.ParameterNameProvider;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+
 import java.lang.reflect.Method;
 
+@Dependent
 public class DefaultMethodSearcher {
 
     private final ParameterNameProvider parameterNameProvider;
