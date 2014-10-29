@@ -15,13 +15,6 @@ public class DefaultMethodSearcher {
 
     private final ParameterNameProvider parameterNameProvider;
 
-    /**
-     * @deprecated CDI eyes only
-     */
-    public DefaultMethodSearcher() {
-        this(null);
-    }
-
     @Inject
     public DefaultMethodSearcher(ParameterNameProvider parameterNameProvider) {
         this.parameterNameProvider = parameterNameProvider;

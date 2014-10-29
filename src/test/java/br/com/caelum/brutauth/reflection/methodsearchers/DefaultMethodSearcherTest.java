@@ -5,18 +5,21 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import br.com.caelum.brutauth.auth.rules.CustomBrutauthRule;
 import br.com.caelum.brutauth.reflection.BrutauthValidation;
 import br.com.caelum.brutauth.reflection.NamedParametersMethod;
+import br.com.caelum.vraptor.http.ParameterNameProvider;
 
 public class DefaultMethodSearcherTest {
 
 	private DefaultMethodSearcher methodSearcher;
-
+	private @Mock ParameterNameProvider parameterNameProvider;
+	
 	@Before
 	public void setUp(){
-		methodSearcher = new DefaultMethodSearcher();
+		methodSearcher = new DefaultMethodSearcher(parameterNameProvider);
 	}
 	
 	
