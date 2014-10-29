@@ -18,7 +18,7 @@ public class DefaultMethodSearcher {
     /**
      * @deprecated CDI eyes only
      */
-    protected DefaultMethodSearcher() {
+    public DefaultMethodSearcher() {
         this(null);
     }
 

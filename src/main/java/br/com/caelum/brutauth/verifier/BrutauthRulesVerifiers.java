@@ -31,13 +31,6 @@ public class BrutauthRulesVerifiers {
 		this.defaultRuleProvider = globalRuleProvider;
 		this.singleVerifier = singleVerifier;
 	}
-
-	/**
-	 * @deprecated CDI eyes only
-	 */
-	protected BrutauthRulesVerifiers() {
-		this(null, null, null);
-	}
 	
 	public boolean verify(BrutauthClassOrMethod type) {
 		List<Annotation> annotations = type.getAnnotations();
