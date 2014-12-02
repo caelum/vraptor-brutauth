@@ -7,6 +7,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class BrutauthClassOrMethod {
 	private final Annotation[] annotations;
 

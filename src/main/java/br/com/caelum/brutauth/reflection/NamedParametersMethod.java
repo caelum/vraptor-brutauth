@@ -5,6 +5,9 @@ import br.com.caelum.vraptor.http.ParameterNameProvider;
 
 import java.lang.reflect.Method;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class NamedParametersMethod {
 
     private ParameterNameProvider parameterNameProvider;

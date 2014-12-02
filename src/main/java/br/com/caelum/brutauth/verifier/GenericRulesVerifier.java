@@ -1,5 +1,6 @@
 package br.com.caelum.brutauth.verifier;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
@@ -12,6 +13,7 @@ import br.com.caelum.vraptor.ioc.Container;
  * @author Leonardo Wolter
  *
  */
+@Dependent
 public class GenericRulesVerifier {
 
 	private Container container;

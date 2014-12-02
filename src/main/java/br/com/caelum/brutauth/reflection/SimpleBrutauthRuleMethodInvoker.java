@@ -1,8 +1,11 @@
 package br.com.caelum.brutauth.reflection;
 
+import javax.enterprise.context.Dependent;
+
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.brutauth.auth.rules.SimpleBrutauthRule;
 
+@Dependent
 public class SimpleBrutauthRuleMethodInvoker implements MethodInvoker {
 
 	public boolean invoke(BrutauthRule toInvoke, Argument[] args) {

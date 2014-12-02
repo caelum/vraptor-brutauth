@@ -3,6 +3,7 @@ package br.com.caelum.brutauth.verifier;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -17,6 +18,7 @@ import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
  * If present, the rule annotated with @GlobalRule will be used at both controller class and methods.
  * @author Leonardo Wolter
  */
+@Dependent
 public class BrutauthRulesVerifiers {
 
 	private final Instance<BrutauthRulesVerifier> verifiers;
@@ -29,13 +31,6 @@ public class BrutauthRulesVerifiers {
 		this.verifiers = verifiers;
 		this.defaultRuleProvider = globalRuleProvider;
 		this.singleVerifier = singleVerifier;
-	}
-
-	/**
-	 * @deprecated CDI eyes only
-	 */
-	protected BrutauthRulesVerifiers() {
-		this(null, null, null);
 	}
 	
 	public boolean verify(BrutauthClassOrMethod type) {

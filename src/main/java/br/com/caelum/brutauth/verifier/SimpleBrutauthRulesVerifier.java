@@ -2,6 +2,7 @@ package br.com.caelum.brutauth.verifier;
 
 import java.lang.annotation.Annotation;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
@@ -14,16 +15,10 @@ import br.com.caelum.brutauth.reflection.Argument;
  * Just get values of SimpleBrutauthRules annotation, this exists because we don't have polimorfism for annotations
  * @author Leonardo Wolter
  */
+@Dependent
 public class SimpleBrutauthRulesVerifier implements BrutauthRulesVerifier {
 	public static final String ACCESS_LEVEL_ARG_NAME = "accessLevel";
 	private final GenericRulesVerifier genericVerifier;
-	
-	/**
-	 * @deprecated CDI eyes only
-	 */
-	public SimpleBrutauthRulesVerifier() {
-		this(null);
-	}
 	
 	@Inject
 	public SimpleBrutauthRulesVerifier(GenericRulesVerifier genericVerifier) {
