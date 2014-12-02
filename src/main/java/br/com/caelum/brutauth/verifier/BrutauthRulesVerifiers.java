@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import br.com.caelum.brutauth.auth.annotations.IgnoreGlobalRule;
 import br.com.caelum.brutauth.auth.rules.BrutauthRule;
 import br.com.caelum.brutauth.auth.rules.GlobalRuleProducer;
 import br.com.caelum.brutauth.interceptors.BrutauthClassOrMethod;
@@ -48,7 +49,9 @@ public class BrutauthRulesVerifiers {
 		}
 		BrutauthRule globalRule = defaultRuleProvider.getInstance();
 		boolean userDefinedGlobalRule = globalRule != null;
-		if(userDefinedGlobalRule) return singleVerifier.verify(globalRule, null);
+		boolean shouldIgnoreGlobalRule = type.containsAnnotation(IgnoreGlobalRule.class);
+		if(userDefinedGlobalRule && !shouldIgnoreGlobalRule)
+			return singleVerifier.verify(globalRule, null);
 		return true;
 	}
 	

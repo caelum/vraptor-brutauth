@@ -52,7 +52,7 @@ public class BrutauthRulesVerifiersTest {
 	}
 	
 	@Test
-	public void should_handle_custom_brutauth_rule_that_returns_true_and_fail_at_default_rule() {
+	public void should_handle_custom_brutauth_rule_that_returns_true_and_fail_at_global_rule() {
 		BrutauthClassOrMethod brutauthMethod = brutauthMethod("myCustomRuleMethod");
 		
 		when(verifier.rulesOfTypeAllows(brutauthMethod)).thenReturn(true);
@@ -64,7 +64,7 @@ public class BrutauthRulesVerifiersTest {
 	}
 
 	@Test
-	public void should_handle_custom_brutauth_rule_that_returns_true_and_succeed_at_default_rule() {
+	public void should_handle_custom_brutauth_rule_that_returns_true_and_succeed_at_global_rule() {
 		BrutauthClassOrMethod brutauthMethod = brutauthMethod("myCustomRuleMethod");
 		
 		when(verifier.rulesOfTypeAllows(brutauthMethod)).thenReturn(true);
@@ -85,7 +85,7 @@ public class BrutauthRulesVerifiersTest {
 	}
 	
 	@Test
-	public void should_use_default_rule_if_method_has_no_annotations() {
+	public void should_use_global_rule_if_method_has_no_annotations() {
 		BrutauthClassOrMethod brutauthMethod = brutauthMethod("myNonAnnotatedMethod");
 		verifiers.verify(brutauthMethod);
 		
@@ -94,12 +94,31 @@ public class BrutauthRulesVerifiersTest {
 	}
 
 	@Test
-	public void should_use_default_rule_if_no_annotations_can_be_handled() {
+	public void should_use_global_rule_if_no_annotations_can_be_handled() {
 		BrutauthClassOrMethod brutauthMethod = brutauthMethod("myNonAnnotatedMethod");
 		verifiers.verify(brutauthMethod);
 		
 		verify(verifier, never()).rulesOfTypeAllows(brutauthMethod);
 		verify(singleVerifier, times(1)).verify(defaultRule, null);
+	}
+	
+	
+	@Test
+	public void should_not_use_global_rule_if_method_has_IgnoreGlobalRule_annotation() {
+		BrutauthClassOrMethod brutauthMethod = brutauthMethod("myIgnoreGlobalMethod");
+		verifiers.verify(brutauthMethod);
+		
+		verify(verifier, never()).rulesOfTypeAllows(brutauthMethod);
+		verify(singleVerifier, never()).verify(defaultRule, null);
+	}
+	
+	@Test
+	public void should_handle_simple_brutauth_rule_and_ignore_global_rule() {
+		BrutauthClassOrMethod brutauthMethod = brutauthMethod("mySimpleRuleIgnoringGlobalMethod");
+		verifiers.verify(brutauthMethod);
+		
+		verify(verifier, times(1)).rulesOfTypeAllows(brutauthMethod);
+		verify(singleVerifier, never()).verify(defaultRule, null);
 	}
 	
 

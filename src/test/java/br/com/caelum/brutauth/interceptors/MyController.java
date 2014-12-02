@@ -2,6 +2,7 @@ package br.com.caelum.brutauth.interceptors;
 
 import br.com.caelum.brutauth.auth.annotations.AccessLevel;
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
+import br.com.caelum.brutauth.auth.annotations.IgnoreGlobalRule;
 import br.com.caelum.brutauth.auth.annotations.SimpleBrutauthRules;
 import br.com.caelum.brutauth.util.TestUtils;
 import br.com.caelum.vraptor.Get;
@@ -35,7 +36,15 @@ public class MyController {
 	public void myGetAnnotationMethod() {}
 	
 	public void myNonAnnotatedMethod() {}
+	
+	@IgnoreGlobalRule
+	public void myIgnoreGlobalMethod() {}
 
+	@SimpleBrutauthRules(MySimpleBiggerThanZeroRule.class)
+	@IgnoreGlobalRule
+	public void mySimpleRuleIgnoringGlobalMethod() {}
+
+	
 	public static ControllerMethod method(String method) {
 		return TestUtils.method(MyController.class, method);
 	}
