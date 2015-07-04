@@ -11,7 +11,7 @@ You can download vraptor-brutauth.jar from maven repository or configured in any
 <dependency>
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-brutauth</artifactId>
-	<version>4.0.1.Final</version> <!--or the latest version-->
+	<version>4.0.4</version> <!--or the latest version-->
 </dependency>
 ```
 
